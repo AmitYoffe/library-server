@@ -1,0 +1,9 @@
+- Guard ,middleware, interceptor (and their differences)
+- exception filter
+- config service
+- dependency injection (injectable)
+- module
+- provider, provider factory
+- scopes
+- unit tests
+- class-validator (controller validation)
