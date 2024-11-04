@@ -1,4 +1,4 @@
-import Writer from 'src/writers/model';
+import Writer from 'src/writers/dto/create-writer.dto';
 
 export default interface Book {
   id: number;

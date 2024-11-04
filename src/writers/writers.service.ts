@@ -1,4 +1,6 @@
 import { Injectable } from '@nestjs/common';
+import CreateWriterDto from './dto/create-writer.dto';
+import { UpdateUserDto } from './dto/update-writer.dto';
 import Writer from './model';
 
 @Injectable()
@@ -30,13 +32,13 @@ export class WritersService {
     return this.writers;
   }
 
-  findOne(id: string) {
-    const writer = this.writers.find((writer) => writer.id === Number(id));
+  findOne(id: number) {
+    const writer = this.writers.find((writer) => writer.id === id);
     return writer;
   }
 
-  create(writer: Writer) {
-    const writerByHighestId = [...this.writers].sort((a, b) => (b.id - a.id));
+  create(writer: CreateWriterDto) {
+    const writerByHighestId = [...this.writers].sort((a, b) => b.id - a.id);
     const newWriter = {
       id: writerByHighestId[0].id + 1,
       ...writer,
@@ -45,9 +47,9 @@ export class WritersService {
     return newWriter;
   }
 
-  update(id: string, updatedWriter: Omit<Writer, 'id'>) {
+  update(id: number, updatedWriter: UpdateUserDto) {
     this.writers = this.writers.map((writer) => {
-      if (writer.id === Number(id)) {
+      if (writer.id === id) {
         return { ...writer, ...updatedWriter };
       }
       return writer;
@@ -56,9 +58,9 @@ export class WritersService {
     return this.findOne(id);
   }
 
-  delete(id: string) {
+  delete(id: number) {
     const removedWriter = this.findOne(id);
-    this.writers = this.writers.filter((writer) => writer.id !== Number(id));
+    this.writers = this.writers.filter((writer) => writer.id !== id);
 
     return removedWriter;
   }

@@ -4,11 +4,14 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Query,
 } from '@nestjs/common';
-import Writer from './model';
+
+import CreateWriterDto from './dto/create-writer.dto';
+import { UpdateUserDto } from './dto/update-writer.dto';
 import { WritersService } from './writers.service';
 
 @Controller('writers')
@@ -21,22 +24,25 @@ export class WritersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.writerService.findOne(id);
   }
 
   @Post()
-  create(@Body() writer: Writer) {
+  create(@Body() writer: CreateWriterDto) {
     return this.writerService.create(writer);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatedWriter: Omit<Writer, 'id'>) {
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatedWriter: UpdateUserDto,
+  ) {
     return this.writerService.update(id, updatedWriter);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
+  delete(@Param('id', ParseIntPipe) id: number) {
     return this.writerService.delete(id);
   }
 }
