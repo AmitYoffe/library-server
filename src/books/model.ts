@@ -4,4 +4,5 @@ export default interface Book {
   id: number;
   title: string;
   writer: Writer;
+  count: number;
 }

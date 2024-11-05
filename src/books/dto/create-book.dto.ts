@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import Writer from 'src/writers/model';
 
 export default class CreateBookDto {
@@ -9,4 +9,7 @@ export default class CreateBookDto {
   @IsNotEmpty()
   writer: Writer;
   // picture: string;
+
+  @IsNumber()
+  count: number;
 }

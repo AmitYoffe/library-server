@@ -10,6 +10,18 @@ Concepts for implementation in the project:
 - scopes
 - unit tests
 
+general todos:
+1) index export files
+2)
+3)
+4)
+
 5/11 Todo:
 1) connect to DB and create appropriate repository layers for writers and books
-2)
+2) add user and Borrowing tables
+
+
+----------------------------------------------------------------------------------------------------------------------------------
+1) define route 
+2) define ERD
+3) learn about type ORM

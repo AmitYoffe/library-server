@@ -7,6 +7,7 @@ import Book from './model';
 export class BooksService {
   private books: Book[] = [];
 
+  // search type shouldnt be string
   findAll(search?: string) {
     if (search) {
       // Todo: send lowercased book in client
@@ -29,7 +30,6 @@ export class BooksService {
   }
 
   create(book: CreateBookDto) {
-    // I think that this is problematic when there are no instances in the db
     const highestId =
       this.books.length === 0 ? 0 : Math.max(...this.books.map((b) => b.id));
 
