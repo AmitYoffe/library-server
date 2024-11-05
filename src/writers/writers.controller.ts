@@ -11,7 +11,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import CreateWriterDto from './dto/create-writer.dto';
-import { UpdateUserDto } from './dto/update-writer.dto';
+import { UpdateWriterDto } from './dto/update-writer.dto';
 import { WritersService } from './writers.service';
 
 @Controller('writers')
@@ -36,7 +36,7 @@ export class WritersController {
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body(ValidationPipe) updatedWriter: UpdateUserDto,
+    @Body(ValidationPipe) updatedWriter: UpdateWriterDto,
   ) {
     return this.writerService.update(id, updatedWriter);
   }

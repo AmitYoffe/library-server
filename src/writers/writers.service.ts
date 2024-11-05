@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import CreateWriterDto from './dto/create-writer.dto';
-import { UpdateUserDto } from './dto/update-writer.dto';
+import { UpdateWriterDto } from './dto/update-writer.dto';
 import Writer from './model';
 
 @Injectable()
@@ -54,7 +54,7 @@ export class WritersService {
     return newWriter;
   }
 
-  update(id: number, updatedWriter: UpdateUserDto) {
+  update(id: number, updatedWriter: UpdateWriterDto) {
     this.writers = this.writers.map((writer) => {
       if (writer.id === id) {
         return { ...writer, ...updatedWriter };
