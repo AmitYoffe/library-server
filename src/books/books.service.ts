@@ -29,9 +29,12 @@ export class BooksService {
   }
 
   create(book: CreateBookDto) {
-    const bookByHighestId = [...this.books].sort((a, b) => b.id - a.id);
+    // I think that this is problematic when there are no instances in the db
+    const highestId =
+      this.books.length === 0 ? 0 : Math.max(...this.books.map((b) => b.id));
+
     const newBook = {
-      id: bookByHighestId[0].id + 1,
+      id: highestId + 1,
       ...book,
     };
     this.books.push(newBook);

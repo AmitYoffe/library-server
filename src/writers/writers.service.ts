@@ -45,9 +45,13 @@ export class WritersService {
   }
 
   create(writer: CreateWriterDto) {
-    const writerByHighestId = [...this.writers].sort((a, b) => b.id - a.id);
+    const highestId =
+      this.writers.length === 0
+        ? 0
+        : Math.max(...this.writers.map((b) => b.id));
+
     const newWriter = {
-      id: writerByHighestId[0].id + 1,
+      id: highestId + 1,
       ...writer,
     };
     this.writers.push(newWriter);
