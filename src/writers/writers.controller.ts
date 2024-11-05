@@ -8,8 +8,8 @@ import {
   Patch,
   Post,
   Query,
+  ValidationPipe,
 } from '@nestjs/common';
-
 import CreateWriterDto from './dto/create-writer.dto';
 import { UpdateUserDto } from './dto/update-writer.dto';
 import { WritersService } from './writers.service';
@@ -29,14 +29,14 @@ export class WritersController {
   }
 
   @Post()
-  create(@Body() writer: CreateWriterDto) {
+  create(@Body(ValidationPipe) writer: CreateWriterDto) {
     return this.writerService.create(writer);
   }
 
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body() updatedWriter: UpdateUserDto,
+    @Body(ValidationPipe) updatedWriter: UpdateUserDto,
   ) {
     return this.writerService.update(id, updatedWriter);
   }

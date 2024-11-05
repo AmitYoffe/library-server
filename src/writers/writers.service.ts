@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import CreateWriterDto from './dto/create-writer.dto';
 import { UpdateUserDto } from './dto/update-writer.dto';
 import Writer from './model';
@@ -23,17 +23,24 @@ export class WritersService {
   findAll(search?: string) {
     if (search) {
       // Todo: send lowercased writer in client
-      return this.writers.filter(
+      const writersArrBySearch = this.writers.filter(
         (writer) =>
           writer.firstName.toLowerCase().includes(search) ||
           writer.secondName.toLowerCase().includes(search),
       );
+      if (writersArrBySearch.length === 0) {
+        throw new NotFoundException(`No Writers Found`);
+      }
+      return writersArrBySearch;
     }
     return this.writers;
   }
 
   findOne(id: number) {
     const writer = this.writers.find((writer) => writer.id === id);
+    if (!writer)
+      throw new NotFoundException(`Writer With Id of ${id} Not Found`);
+
     return writer;
   }
 
