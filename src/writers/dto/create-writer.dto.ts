@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString,  } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 import Book from 'src/books/model';
 
 export default class CreateWriterDto {
@@ -10,4 +10,5 @@ export default class CreateWriterDto {
   @IsNotEmpty()
   secondName: string;
   books: Book[];
+  // profilePicture: string;
 }
