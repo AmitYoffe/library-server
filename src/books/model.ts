@@ -6,3 +6,5 @@ export default interface Book {
   writer: Writer;
   count: number;
 }
+
+// i think i can delete these...
