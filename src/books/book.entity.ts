@@ -1,5 +1,5 @@
-import Writer from 'src/writers/model';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Writer } from 'src/writers/writer.entity';
+import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('books')
 export class Book extends BaseEntity {
@@ -13,9 +13,7 @@ export class Book extends BaseEntity {
   })
   title: string;
 
-  @Column({
-    type: 'varchar', // not sure 
-  })
+  @ManyToOne(() => Writer, (writer) => writer.id)
   writer: Writer;
 
   @Column({

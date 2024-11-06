@@ -7,4 +7,4 @@ async function bootstrap() {
 }
 bootstrap();
 
-// find alternative to process.env
+// find alternative to process.env - ido said that the hofefim commented about it

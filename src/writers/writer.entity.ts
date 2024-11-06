@@ -1,5 +1,5 @@
-import Book from 'src/books/model';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Book } from 'src/books/book.entity';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('writers')
 export class Writer extends BaseEntity {
@@ -18,8 +18,6 @@ export class Writer extends BaseEntity {
   })
   secondName: string;
 
-  @Column({
-    type: 'integer', // type should be array?
-  })
+  @OneToMany(() => Book, (book) => book.id)
   books: Book[];
 }

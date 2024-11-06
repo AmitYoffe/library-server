@@ -1,78 +1,61 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ILike, Repository } from 'typeorm';
 import CreateWriterDto from './dto/create-writer.dto';
 import { UpdateWriterDto } from './dto/update-writer.dto';
-import Writer from './model';
+import { Writer } from './writer.entity';
 
 @Injectable()
 export class WritersService {
-  private writers: Writer[] = [
-    {
-      id: 1,
-      firstName: 'gever',
-      secondName: 'gever',
-      books: [],
-    },
-    {
-      id: 2,
-      firstName: 'gvara',
-      secondName: 'geveret',
-      books: [],
-    },
-  ];
+  constructor(
+    @InjectRepository(Writer)
+    private writersRepository: Repository<Writer>,
+  ) { }
 
-  findAll(search?: string) {
+  async findAll(search?: string) {
+    let writersArrBySearch: Writer[];
+
     if (search) {
-      // Todo: send lowercased writer in client
-      const writersArrBySearch = this.writers.filter(
-        (writer) =>
-          writer.firstName.toLowerCase().includes(search) ||
-          writer.secondName.toLowerCase().includes(search),
-      );
-      if (writersArrBySearch.length === 0) {
-        throw new NotFoundException(`No Writers Found`);
-      }
-      return writersArrBySearch;
+      writersArrBySearch = await this.writersRepository.find({
+        where: [
+          { firstName: ILike(`%${search}%`) },
+          { secondName: ILike(`%${search}%`) }
+        ],
+      });
+    } else {
+      writersArrBySearch = await this.writersRepository.find()
     }
-    return this.writers;
+
+    if (writersArrBySearch.length === 0) {
+      throw new NotFoundException(`No Writers Found`);
+    }
+
+    return writersArrBySearch;
   }
 
-  findOne(id: number) {
-    const writer = this.writers.find((writer) => writer.id === id);
-    if (!writer)
-      throw new NotFoundException(`Writer With Id of ${id} Not Found`);
+  async findOne(id: number) {
+    const writer = await this.writersRepository.findOneBy({ id })
+    if (!writer) throw new NotFoundException(`Writer With Id of ${id} Not Found`);
 
     return writer;
   }
 
-  create(writer: CreateWriterDto) {
-    const highestId =
-      this.writers.length === 0
-        ? 0
-        : Math.max(...this.writers.map((b) => b.id));
-
-    const newWriter = {
-      id: highestId + 1,
-      ...writer,
-    };
-    this.writers.push(newWriter);
-    return newWriter;
+  async create(writerDto: CreateWriterDto) {
+    const writer = this.writersRepository.create(writerDto);
+    return await this.writersRepository.save(writer)
   }
 
-  update(id: number, updatedWriter: UpdateWriterDto) {
-    this.writers = this.writers.map((writer) => {
-      if (writer.id === id) {
-        return { ...writer, ...updatedWriter };
-      }
-      return writer;
-    });
+  async update(id: number, updatedWriter: UpdateWriterDto) {
+    const writerToUpdate = await this.writersRepository.findOneBy({ id });
+    if (!writerToUpdate) {
+      throw new NotFoundException(`Writer with ID ${id} not found`);
+    }
+    Object.assign(writerToUpdate, updatedWriter);
 
-    return this.findOne(id);
+    return await this.writersRepository.save(writerToUpdate);
   }
 
-  delete(id: number) {
-    const removedWriter = this.findOne(id);
-    this.writers = this.writers.filter((writer) => writer.id !== id);
-
-    return removedWriter;
+  async delete(id: number) {
+    await this.writersRepository.delete(id);
   }
 }

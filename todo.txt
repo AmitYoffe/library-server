@@ -12,16 +12,15 @@ Concepts for implementation in the project:
 
 general todos:
 1) index export files
-2)
+2) need to actually understand the whole db - repository configuration. 
+Maybe also refactor the config file into a class.
 3)
 4)
 
-5/11 Todo:
-1) connect to DB and create appropriate repository layers for writers and books
-2) add user and Borrowing tables
-
+10/11 Todo:
+1) add "user" and "Borrowings" tables
+2) create all the layers for writers and books  
+3) Debug the last bug!
 
 ----------------------------------------------------------------------------------------------------------------------------------
-1) define route ✅
-2) define ERD ✅
-3) learn about type ORM 🚫
+Learn more about type ORM 🚫

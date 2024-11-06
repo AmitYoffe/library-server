@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import Writer from 'src/writers/model';
+import { Writer } from 'src/writers/writer.entity';
 
 export default class CreateBookDto {
   @IsString()
