@@ -22,6 +22,6 @@ general todos:
 
 
 ----------------------------------------------------------------------------------------------------------------------------------
-1) define route 
-2) define ERD
-3) learn about type ORM
+1) define route ✅
+2) define ERD ✅
+3) learn about type ORM 🚫
