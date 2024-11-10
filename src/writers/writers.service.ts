@@ -19,11 +19,14 @@ export class WritersService {
       writersArrBySearch = await this.writersRepository.find({
         where: [
           { firstName: ILike(`%${search}%`) },
-          { secondName: ILike(`%${search}%`) }
+          { lastName: ILike(`%${search}%`) }
         ],
+        relations: ['books']
       });
     } else {
-      writersArrBySearch = await this.writersRepository.find()
+      writersArrBySearch = await this.writersRepository.find({
+        relations: ['books']
+      })
     }
 
     if (writersArrBySearch.length === 0) {
@@ -34,7 +37,11 @@ export class WritersService {
   }
 
   async findOne(id: number) {
-    const writer = await this.writersRepository.findOneBy({ id })
+    const writer = await this.writersRepository.findOne({
+      where: { id },
+      relations: ['books']
+    });
+
     if (!writer) throw new NotFoundException(`Writer With Id of ${id} Not Found`);
 
     return writer;

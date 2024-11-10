@@ -8,7 +8,7 @@ export default class CreateWriterDto {
 
   @IsString()
   @IsNotEmpty()
-  secondName: string;
+  lastName: string;
 
   books: Book[];
   // profilePicture: string;

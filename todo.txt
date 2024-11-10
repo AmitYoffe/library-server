@@ -18,9 +18,8 @@ Maybe also refactor the config file into a class.
 4)
 
 10/11 Todo:
-1) add "user" and "Borrowings" tables
-2) create all the layers for writers and books  
-3) Debug the last bug!
+1) add "user" and "Borrowings" tables and create all their appropriate layers
+2)
+3) 
 
 ----------------------------------------------------------------------------------------------------------------------------------
-Learn more about type ORM 🚫

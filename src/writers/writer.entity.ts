@@ -1,5 +1,5 @@
 import { Book } from 'src/books/book.entity';
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('writers')
 export class Writer extends BaseEntity {
@@ -16,8 +16,8 @@ export class Writer extends BaseEntity {
   @Column({
     type: 'text',
   })
-  secondName: string;
+  lastName: string;
 
-  @OneToMany(() => Book, (book) => book.id)
+  @OneToMany(() => Book, (book) => book.writer)
   books: Book[];
 }

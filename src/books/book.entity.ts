@@ -9,14 +9,16 @@ export class Book extends BaseEntity {
   id: number;
 
   @Column({
+    unique: true,
     type: 'text',
   })
   title: string;
 
-  @ManyToOne(() => Writer, (writer) => writer.id)
+  @ManyToOne(() => Writer, (writer) => writer.books)
   writer: Writer;
 
   @Column({
+    default: 0,
     type: 'integer',
   })
   count: number;
