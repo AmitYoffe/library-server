@@ -13,13 +13,12 @@ Concepts for implementation in the project:
 general todos:
 1) index export files
 2) need to actually understand the whole db - repository configuration. 
-Maybe also refactor the config file into a class.
-3)
+3) Maybe also refactor the config file into a class - (( Is this what "config service" means ? ))
 4)
 
-10/11 Todo:
-1) add "user" and "Borrowings" tables and create all their appropriate layers
-2)
+11/11 Todo:
+1) Create "Users" table and create all of the appropriate layers
+2) 
 3) 
 
 ----------------------------------------------------------------------------------------------------------------------------------

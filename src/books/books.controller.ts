@@ -10,13 +10,17 @@ import {
   Query,
   ValidationPipe,
 } from '@nestjs/common';
+import { BorrowsService } from 'src/borrows/borrows.service';
 import { BooksService } from './books.service';
 import CreateBookDto from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Controller('books')
 export class BooksController {
-  constructor(private readonly bookService: BooksService) {}
+  constructor(
+    private readonly bookService: BooksService,
+    private readonly borrowsService: BorrowsService
+  ) { }
 
   @Get()
   findAll(@Query('search') search?: string) {
@@ -31,6 +35,14 @@ export class BooksController {
   @Post()
   create(@Body(ValidationPipe) book: CreateBookDto) {
     return this.bookService.create(book);
+  }
+
+  @Post('borrow/:bookId/:userId')
+  borrow(
+    @Param('bookId', ParseIntPipe) bookId: number,
+    @Param('userId', ParseIntPipe) userId: number, // fake this userId for now
+  ) {
+    return this.borrowsService.borrowBook({ bookId, userId });
   }
 
   @Patch(':id')

@@ -15,7 +15,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   password: password,
   database: dbName,
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  // logging: true,
   synchronize: true,
   // turn this to false when i'm done altering entities
 };

@@ -60,5 +60,3 @@ export class BooksService {
     await this.booksRepository.delete(id);
   }
 }
-
-// remove function type definitions
