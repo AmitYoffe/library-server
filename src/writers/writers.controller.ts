@@ -10,13 +10,12 @@ import {
   Query,
   ValidationPipe,
 } from '@nestjs/common';
-import CreateWriterDto from './dto/create-writer.dto';
-import { UpdateWriterDto } from './dto/update-writer.dto';
+import { CreateWriterDto, UpdateWriterDto } from './dto';
 import { WritersService } from './writers.service';
 
 @Controller('writers')
 export class WritersController {
-  constructor(private readonly writerService: WritersService) {}
+  constructor(private readonly writerService: WritersService) { }
 
   @Get()
   findAll(@Query('search') search?: string) {

@@ -12,8 +12,7 @@ import {
 } from '@nestjs/common';
 import { BorrowsService } from 'src/borrows/borrows.service';
 import { BooksService } from './books.service';
-import CreateBookDto from './dto/create-book.dto';
-import { UpdateBookDto } from './dto/update-book.dto';
+import { UpdateBookDto , CreateBookDto} from './dto';
 
 @Controller('books')
 export class BooksController {
