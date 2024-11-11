@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { BorrowsService } from 'src/borrows/borrows.service';
 import { BooksService } from './books.service';
-import { UpdateBookDto , CreateBookDto} from './dto';
+import { UpdateBookDto, CreateBookDto } from './dto';
 
 @Controller('books')
 export class BooksController {
@@ -39,7 +39,7 @@ export class BooksController {
   @Post('borrow/:bookId/:userId')
   borrow(
     @Param('bookId', ParseIntPipe) bookId: number,
-    @Param('userId', ParseIntPipe) userId: number, // fake this userId for now
+    @Param('userId', ParseIntPipe) userId: number,
   ) {
     return this.borrowsService.borrowBook({ bookId, userId });
   }

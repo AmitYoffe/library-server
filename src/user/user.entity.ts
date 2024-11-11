@@ -1,8 +1,8 @@
-import { Book } from 'src/books/book.entity';
+import { Borrow } from 'src/borrows/borrow.entity';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity('writers')
-export class Writer extends BaseEntity {
+@Entity('users')
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'integer',
   })
@@ -18,6 +18,6 @@ export class Writer extends BaseEntity {
   })
   lastName: string;
 
-  @OneToMany(() => Book, (book) => book.writer)
-  books: Book[];
+  @OneToMany(() => Borrow, (borrow) => borrow.user)
+  borrows: Borrow[];
 }

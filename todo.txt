@@ -5,19 +5,20 @@ Concepts for implementation in the project:
 - config service ✅
 - module ✅
 - exception filter ✅ 
-- provider, provider factory 🤔
-- Guard, middleware, interceptor (and their differences)
+- provider, provider factory ✅
 - scopes ( specific to NestJs )
+- Guard, middleware, interceptor (and their differences)
 - unit tests 🤔?
 
 general todos:
 1) index export files
-2) Create "Users" table and create all of the appropriate layers 
+2) Now i need to check if i can pull all of the book borrowed by a user, or all the users that borrowed the book.
+- ( Only work on the typeOrm SQL queries that are necessary according to the figma plan )
 3) 
 
-11/11 Todo:
-1) need to actually understand the whole db - repository configuration. 
-2) Implement "provider" & "provider factory"
+12/11 Todo:
+1) I need to actually understand the whole db - repository configuration.
+2) 
 3) 
 
 ----------------------------------------------------------------------------------------------------------------------------------

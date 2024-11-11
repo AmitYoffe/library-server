@@ -27,6 +27,7 @@ export class BorrowsService {
       userId,
       book,
     });
+
     return await this.borrowsRepository.save(borrow)
   }
 }

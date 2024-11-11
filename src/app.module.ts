@@ -8,18 +8,22 @@ import { BorrowsModule } from './borrows/borrows.module';
 import { typeOrmConfigAsync } from './config/typeorm.config';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { WritersModule } from './writers/writers.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync(typeOrmConfigAsync),
     BooksModule,
     WritersModule,
-    BorrowsModule
+    BorrowsModule,
+    UserModule
   ],
   controllers: [AppController],
   providers: [AppService, 
   {
+    // APP_FILTER makes it a global filter
     provide: APP_FILTER,
+    // useClass is used to instantiate the privided class if necessary
     useClass: HttpExceptionFilter,
   },
 ]
