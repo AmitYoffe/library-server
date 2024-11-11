@@ -2,23 +2,23 @@ Concepts for implementation in the project:
 
 - dependency injection (injectable) ✅
 - class-validator (controller validation) ✅
+- config service ✅
+- module ✅
 - exception filter 🤔
-- Guard ,middleware, interceptor (and their differences)
-- config service
-- module
+- Guard, middleware, interceptor (and their differences)
 - provider, provider factory
 - scopes
 - unit tests
 
 general todos:
 1) index export files
-2) need to actually understand the whole db - repository configuration. 
+2) 
 3) 
 4)
 
 11/11 Todo:
-1) Create "Users" table and create all of the appropriate layers
-2) Maybe also refactor the config file into a class - (( Is this what "config service" means ? ))
+1) need to actually understand the whole db - repository configuration. 
+2) Create "Users" table and create all of the appropriate layers
 3) 
 
 ----------------------------------------------------------------------------------------------------------------------------------

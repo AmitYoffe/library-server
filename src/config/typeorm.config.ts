@@ -1,20 +1,27 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import * as dotenv from 'dotenv';
 dotenv.config();
 
-const port = parseInt(process.env.PORT);
-const username = process.env.DB_USERNAME;
-const password = process.env.PASSWORD;
-const dbName = process.env.DB_NAME;
-
-export const typeOrmConfig: TypeOrmModuleOptions = {
-  type: 'postgres',
-  host: 'localhost',
-  port: port,
-  username: username,
-  password: password,
-  database: dbName,
-  entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  synchronize: true,
-  // turn this to false when i'm done altering entities
+export class TypeOrmConfig {
+  static getOrmConfig(configService: ConfigService): TypeOrmModuleOptions {
+    return {
+      type: "postgres",
+      host: configService.get("HOST"),
+      port: configService.get("PORT"),
+      username: configService.get("DB_USERNAME"),
+      password: configService.get("DB_PASSWORD"),
+      database: configService.get("DB_NAME"),
+      entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+      synchronize: true,
+      // turn synchronize to false when i'm done altering entities
+    }
+  }
 };
+
+export const typeOrmConfigAsync: TypeOrmModuleAsyncOptions = {
+  imports: [ConfigModule],
+  useFactory: async (configService: ConfigService): Promise<TypeOrmModuleOptions> =>
+    TypeOrmConfig.getOrmConfig(configService),
+  inject: [ConfigService]
+}
