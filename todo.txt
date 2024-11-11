@@ -4,7 +4,7 @@ Concepts for implementation in the project:
 - class-validator (controller validation) ✅
 - config service ✅
 - module ✅
-- exception filter 🤔
+- exception filter 🤔 ( in the video )
 - Guard, middleware, interceptor (and their differences)
 - provider, provider factory
 - scopes
@@ -14,7 +14,6 @@ general todos:
 1) index export files
 2) 
 3) 
-4)
 
 11/11 Todo:
 1) need to actually understand the whole db - repository configuration. 
