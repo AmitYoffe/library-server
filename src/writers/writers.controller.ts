@@ -8,7 +8,7 @@ import {
   Patch,
   Post,
   Query,
-  ValidationPipe,
+  ValidationPipe
 } from '@nestjs/common';
 import { CreateWriterDto, UpdateWriterDto } from './dto';
 import { WritersService } from './writers.service';

@@ -4,20 +4,20 @@ Concepts for implementation in the project:
 - class-validator (controller validation) ✅
 - config service ✅
 - module ✅
-- exception filter 🤔 ( in the video )
+- exception filter ✅ 
+- provider, provider factory 🤔
 - Guard, middleware, interceptor (and their differences)
-- provider, provider factory
-- scopes
-- unit tests
+- scopes ( specific to NestJs )
+- unit tests 🤔?
 
 general todos:
 1) index export files
-2) 
+2) Create "Users" table and create all of the appropriate layers 
 3) 
 
 11/11 Todo:
 1) need to actually understand the whole db - repository configuration. 
-2) Create "Users" table and create all of the appropriate layers
+2) Implement "provider" & "provider factory"
 3) 
 
 ----------------------------------------------------------------------------------------------------------------------------------
