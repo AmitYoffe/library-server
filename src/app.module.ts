@@ -8,7 +8,7 @@ import { BorrowsModule } from './borrows/borrows.module';
 import { typeOrmConfigAsync } from './config/typeorm.config';
 import { HttpExceptionFilter } from './http-exception.filter';
 import { WritersModule } from './writers/writers.module';
-import { UserModule } from './user/user.module';
+import { UserModule } from './users/user.module';
 
 @Module({
   imports: [
