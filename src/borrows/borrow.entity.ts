@@ -1,5 +1,4 @@
-import { Book } from 'src/books/book.entity';
-import { User } from 'src/users/user.entity';
+import { Book, User } from 'src';
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('borrows')

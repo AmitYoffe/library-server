@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Writer } from './writer.entity';
-import { WritersController } from './writers.controller';
-import { WritersService } from './writers.service';
+import { Writer, WritersController, WritersService } from './index';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Writer])],
