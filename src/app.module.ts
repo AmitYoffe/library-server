@@ -20,7 +20,7 @@ import { WritersModule } from './writers/writers.module';
   controllers: [AppController],
   providers: [AppService, 
   {
-    // APP_FILTER makes it a global filter
+    // APP_FILTER to make it a global filter class
     provide: APP_FILTER,
     // useClass is used to instantiate the privided class if necessary
     useClass: HttpExceptionFilter,

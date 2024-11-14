@@ -14,11 +14,12 @@ general todos:
 1) index export files
 2) Now i need to check if i can pull all of the book borrowed by a user, or all the users that borrowed the book.
 - ( Only work on the typeOrm SQL queries that are necessary according to the figma plan )
-3) 
+3) Make sure i implement comments from both sakads !
+4) Enforce eslint, ido gave me an example file
 
-12/11 Todo:
+14/11 Todo:
 1) I need to actually understand the whole db - repository configuration.
-2) 
+2) Finish reading the article and then find how to add a scope: ( Scope.REQUEST )
 3) 
 
 ----------------------------------------------------------------------------------------------------------------------------------
