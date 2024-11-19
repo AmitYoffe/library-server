@@ -1,8 +1,8 @@
-import { Borrow } from 'src/borrows/borrow.entity';
+import { BorrowEntity } from 'src/borrows/borrow.entity';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('users')
-export class User extends BaseEntity {
+export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'integer',
   })
@@ -18,6 +18,9 @@ export class User extends BaseEntity {
   })
   lastName: string;
 
-  @OneToMany(() => Borrow, (borrow) => borrow.user)
-  borrows: Borrow[];
+  @OneToMany(() => BorrowEntity, (borrow) => borrow.user)
+  borrows: BorrowEntity[];
 }
+
+// add an (IsAdmin: bool )field and use it in the Guard
+// and a password field

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Writer, WritersController, WritersService } from './index';
+import { WriterEntity, WritersController, WritersService } from './index';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Writer])],
+  imports: [TypeOrmModule.forFeature([WriterEntity])],
   exports: [TypeOrmModule],
   controllers: [WritersController],
   providers: [WritersService]

@@ -1,35 +1,36 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
-import { UpdateWriterDto, CreateWriterDto } from './dto';
-import { Writer } from './writer.entity';
+import { Repository } from 'typeorm';
+import { CreateWriterDto, SearchWriterDto, UpdateWriterDto } from './dto';
+import { WriterEntity } from './writer.entity';
 
+// do not need to use "ILike" ?
 @Injectable()
 export class WritersService {
   constructor(
-    @InjectRepository(Writer)
-    private writersRepository: Repository<Writer>,
+    // each entity class should have a suffix of "entity" similar to DTO
+    @InjectRepository(WriterEntity)
+    private writersRepository: Repository<WriterEntity>,
   ) { }
 
-  async findAll(search?: string) {
-    let writersArrBySearch: Writer[];
+  async findAll(searchQuery: SearchWriterDto) {
+    let writersArrBySearch: WriterEntity[] = await this.writersRepository.find();
 
-    if (search) {
-      writersArrBySearch = await this.writersRepository.find({
-        where: [
-          { firstName: ILike(`%${search}%`) },
-          { lastName: ILike(`%${search}%`) }
-        ],
-        relations: ['books']
-      });
-    } else {
-      writersArrBySearch = await this.writersRepository.find({
-        relations: ['books']
-      })
+    // find how can i do this conditional searching using typeOrm instead
+    if (searchQuery.id) {
+      writersArrBySearch = writersArrBySearch.filter(writer => writer.id === searchQuery.id);
     }
 
-    if (writersArrBySearch.length === 0) {
-      throw new NotFoundException(`No Writers Found`);
+    if (searchQuery.firstName) {
+      writersArrBySearch = writersArrBySearch.filter(writer =>
+        writer.firstName.toLowerCase().includes(searchQuery.firstName.toLowerCase())
+      );
+    }
+
+    if (searchQuery.lastName) {
+      writersArrBySearch = writersArrBySearch.filter(writer =>
+        writer.lastName.toLowerCase().includes(searchQuery.lastName.toLowerCase())
+      );
     }
 
     return writersArrBySearch;

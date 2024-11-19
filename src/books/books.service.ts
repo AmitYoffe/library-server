@@ -1,20 +1,20 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ILike, Repository } from 'typeorm';
-import { Book } from './book.entity';
+import { BookEntity } from './book.entity';
 import { UpdateBookDto, CreateBookDto } from './dto';
 
 @Injectable()
 export class BooksService {
   constructor(
-    @InjectRepository(Book)
-    private booksRepository: Repository<Book>,
+    @InjectRepository(BookEntity)
+    private booksRepository: Repository<BookEntity>,
   ) { }
 
   // search type shouldnt be string ?
   // Todo: send lowercased book in client?
   async findAll(search?: string) {
-    let booksArrBySearch: Book[];
+    let booksArrBySearch: BookEntity[];
 
     if (search) {
       booksArrBySearch = await this.booksRepository.find({

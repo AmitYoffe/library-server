@@ -1,9 +1,9 @@
-import { Borrow } from 'src/borrows/borrow.entity';
-import { Writer } from 'src/writers/writer.entity';
+import { BorrowEntity } from 'src/borrows/borrow.entity';
+import { WriterEntity } from 'src/writers/writer.entity';
 import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('books')
-export class Book extends BaseEntity {
+export class BookEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'integer',
   })
@@ -21,9 +21,9 @@ export class Book extends BaseEntity {
   })
   count: number;
 
-  @ManyToOne(() => Writer, (writer) => writer.books)
-  writer: Writer;
+  @ManyToOne(() => WriterEntity, (writer) => writer.books)
+  writer: WriterEntity;
 
-  @OneToMany(() => Borrow, (borrow) => borrow.book)
-  borrows: Borrow[];
+  @OneToMany(() => BorrowEntity, (borrow) => borrow.book)
+  borrows: BorrowEntity[];
 }

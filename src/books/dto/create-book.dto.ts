@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
-import { Writer } from 'src/writers/writer.entity';
+import { WriterEntity } from 'src/writers/writer.entity';
 
 export class CreateBookDto {
   @IsString()
@@ -7,7 +7,7 @@ export class CreateBookDto {
   title: string;
 
   @IsNotEmpty()
-  writer: Writer;
+  writer: WriterEntity;
   // picture: string;
 
   @IsNumber()

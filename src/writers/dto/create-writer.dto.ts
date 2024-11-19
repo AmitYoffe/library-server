@@ -1,5 +1,5 @@
 import { IsNotEmpty, IsString } from 'class-validator';
-import { Book } from 'src/books/book.entity';
+import { BookEntity } from 'src/books/book.entity';
 
 export class CreateWriterDto {
   @IsString()
@@ -10,6 +10,6 @@ export class CreateWriterDto {
   @IsNotEmpty()
   lastName: string;
 
-  books: Book[];
+  books: BookEntity[];
   // profilePicture: string;
 }

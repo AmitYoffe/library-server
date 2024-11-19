@@ -1,8 +1,8 @@
-import { Book, User } from 'src';
+import { BookEntity, UserEntity } from 'src';
 import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('borrows')
-export class Borrow extends BaseEntity {
+export class BorrowEntity extends BaseEntity {
     @PrimaryGeneratedColumn({
         type: 'integer',
     })
@@ -13,9 +13,9 @@ export class Borrow extends BaseEntity {
     })
     userId: number;
 
-    @ManyToOne(() => Book, (book) => book.borrows, { onDelete: 'CASCADE' })
-    book: Book;
+    @ManyToOne(() => BookEntity, (book) => book.borrows, { onDelete: 'CASCADE' })
+    book: BookEntity;
 
-    @ManyToOne(() => User, (user) => user.borrows, { onDelete: 'CASCADE' })
-    user: User;
+    @ManyToOne(() => UserEntity, (user) => user.borrows, { onDelete: 'CASCADE' })
+    user: UserEntity;
 }

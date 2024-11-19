@@ -1,8 +1,8 @@
-import { Book } from 'src/books/book.entity';
+import { BookEntity } from 'src/books/book.entity';
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('writers')
-export class Writer extends BaseEntity {
+export class WriterEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'integer',
   })
@@ -18,6 +18,6 @@ export class Writer extends BaseEntity {
   })
   lastName: string;
 
-  @OneToMany(() => Book, (book) => book.writer)
-  books: Book[];
+  @OneToMany(() => BookEntity, (book) => book.writer)
+  books: BookEntity[];
 }

@@ -1,22 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Book } from 'src/books/book.entity';
+import { BookEntity } from 'src/books/book.entity';
 import { Repository } from 'typeorm';
-import { Borrow } from './borrow.entity';
+import { BorrowEntity } from './borrow.entity';
 import CreateBorrowDto from './dto/create-borrow.dto';
 
 @Injectable()
 export class BorrowsService {
   constructor(
-    @InjectRepository(Borrow)
-    private borrowsRepository: Repository<Borrow>,
+    @InjectRepository(BorrowEntity)
+    private borrowsRepository: Repository<BorrowEntity>,
 
-    @InjectRepository(Book)
-    private booksRepository: Repository<Book>,
+    @InjectRepository(BookEntity)
+    private booksRepository: Repository<BookEntity>,
   ) { }
 
-  async borrowBook(borrowDto: CreateBorrowDto) {
-    const { bookId, userId } = borrowDto;
+  async borrowBook({ bookId, userId }: CreateBorrowDto) {
     const book = await this.booksRepository.findOne({ where: { id: bookId } });
 
     if (!book) {

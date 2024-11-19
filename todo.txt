@@ -7,7 +7,8 @@ Concepts for implementation in the project:
 - exception filter ✅ 
 - provider, provider factory ✅
 - scopes ( specific to NestJs )
-- Guard, middleware, interceptor (and their differences)
+- Guard ( use jwt ), middleware, interceptor (and their differences) 
+    ( implement guard and add logger middleware, but not interceptor)
 - unit tests 🤔?
 
 general todos:
