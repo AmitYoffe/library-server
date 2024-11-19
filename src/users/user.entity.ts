@@ -31,5 +31,3 @@ export class UserEntity extends BaseEntity {
   @OneToMany(() => BorrowEntity, (borrow) => borrow.user)
   borrows: BorrowEntity[];
 }
-
-// use IsAdmin in the Guard

@@ -1,10 +1,13 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
-//todo:  pass the url to .env 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors({ origin: 'https://localhost:3000' });
+  const configService = app.get(ConfigService);
+  const clinetURL: string = configService.get("CLIENT_URL")
+
+  app.enableCors({ origin: clinetURL });
   await app.listen(3000);
 }
 bootstrap();

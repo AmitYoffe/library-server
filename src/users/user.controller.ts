@@ -18,6 +18,3 @@ export class UserController {
         return this.userService.register(user);
     }
 }
-
-// Todo: I should add a permission check for EVERY request throughout the project,
-// need to check if a user is even logged in and apply logic accordingly.

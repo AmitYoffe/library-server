@@ -17,7 +17,7 @@ general todos:
 - ( Only work on the typeOrm SQL queries that are necessary according to the figma plan )
 3) Make sure I Implement comments from both sakads !
 4) Enforce eslint, ido gave me an example file
-5) 
+5) Add logger middleware
 6) 
 7) 
 
