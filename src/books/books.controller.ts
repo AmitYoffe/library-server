@@ -12,7 +12,7 @@ import {
 } from '@nestjs/common';
 import { BorrowsService } from 'src/borrows/borrows.service';
 import { BooksService } from './books.service';
-import { UpdateBookDto, CreateBookDto } from './dto';
+import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 
 @Controller('books')
 export class BooksController {
@@ -22,8 +22,8 @@ export class BooksController {
   ) { }
 
   @Get()
-  findAll(@Query('search') search?: string) {
-    return this.bookService.findAll(search);
+  async findAll(@Query(ValidationPipe) searchQuery: SearchBookDto) {
+    return await this.bookService.findAll(searchQuery);
   }
 
   @Get(':id')

@@ -18,9 +18,8 @@ export class WritersController {
   constructor(private readonly writerService: WritersService) { }
 
   @Get()
-  findAll(@Query(ValidationPipe) searchQuery: SearchWriterDto) {
-    console.log(searchQuery)
-    return this.writerService.findAll(searchQuery);
+  async findAll(@Query(ValidationPipe) searchQuery: SearchWriterDto) {
+    return await this.writerService.findAll(searchQuery);
   }
 
   @Get(':id')

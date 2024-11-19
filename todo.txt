@@ -17,10 +17,13 @@ general todos:
 - ( Only work on the typeOrm SQL queries that are necessary according to the figma plan )
 3) Make sure i implement comments from both sakads !
 4) Enforce eslint, ido gave me an example file
+5) I need to actually understand the whole db - repository configuration.
+6) Make all the service classes use typeOrm query builders - similar to how it is in the writer-service 
+7) 
 
-14/11 Todo:
-1) I need to actually understand the whole db - repository configuration.
-2) Finish reading the article and then find how to add a scope: ( Scope.REQUEST )
+20/11 Todo:
+1) Implement search query DTO for books aswell
+2) Replan routes in a much more exact manner
 3) 
 
 ----------------------------------------------------------------------------------------------------------------------------------

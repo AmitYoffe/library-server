@@ -4,36 +4,29 @@ import { Repository } from 'typeorm';
 import { CreateWriterDto, SearchWriterDto, UpdateWriterDto } from './dto';
 import { WriterEntity } from './writer.entity';
 
-// do not need to use "ILike" ?
 @Injectable()
 export class WritersService {
   constructor(
-    // each entity class should have a suffix of "entity" similar to DTO
     @InjectRepository(WriterEntity)
     private writersRepository: Repository<WriterEntity>,
   ) { }
 
-  async findAll(searchQuery: SearchWriterDto) {
-    let writersArrBySearch: WriterEntity[] = await this.writersRepository.find();
+  async findAll({ id, firstName, lastName }: SearchWriterDto): Promise<WriterEntity[]> {
+    const queryBuilder = this.writersRepository.createQueryBuilder('writer');
 
-    // find how can i do this conditional searching using typeOrm instead
-    if (searchQuery.id) {
-      writersArrBySearch = writersArrBySearch.filter(writer => writer.id === searchQuery.id);
+    if (id) {
+      queryBuilder.andWhere('writer.id = :writerId', { writerId: id });
     }
 
-    if (searchQuery.firstName) {
-      writersArrBySearch = writersArrBySearch.filter(writer =>
-        writer.firstName.toLowerCase().includes(searchQuery.firstName.toLowerCase())
-      );
+    if (firstName) {
+      queryBuilder.andWhere('writer.firstName ILIKE :firstName', { firstName: `%${firstName}%` });
     }
 
-    if (searchQuery.lastName) {
-      writersArrBySearch = writersArrBySearch.filter(writer =>
-        writer.lastName.toLowerCase().includes(searchQuery.lastName.toLowerCase())
-      );
+    if (lastName) {
+      queryBuilder.andWhere('writer.lastName ILIKE :lastName', { lastName: `%${lastName}%` });
     }
 
-    return writersArrBySearch;
+    return await queryBuilder.getMany();
   }
 
   async findOne(id: number) {

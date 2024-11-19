@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { BookEntity } from './book.entity';
-import { UpdateBookDto, CreateBookDto } from './dto';
+import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 
 @Injectable()
 export class BooksService {
@@ -11,26 +11,18 @@ export class BooksService {
     private booksRepository: Repository<BookEntity>,
   ) { }
 
-  // search type shouldnt be string ?
-  // Todo: send lowercased book in client?
-  async findAll(search?: string) {
-    let booksArrBySearch: BookEntity[];
+  async findAll({ title, id }: SearchBookDto) {
+    const queryBuilder = this.booksRepository.createQueryBuilder('book');
 
-    if (search) {
-      booksArrBySearch = await this.booksRepository.find({
-        where: {
-          title: ILike(`%${search}%`),
-        },
-      });
-    } else {
-      booksArrBySearch = await this.booksRepository.find()
+    if (id) {
+      queryBuilder.andWhere('book.id = :bookId', { bookId: id });
     }
 
-    if (booksArrBySearch.length === 0) {
-      throw new NotFoundException(`No Books Found`);
+    if (title) {
+      queryBuilder.andWhere('book.title ILIKE :title', { title: `%${title}%` });
     }
 
-    return booksArrBySearch;
+    return await queryBuilder.getMany();
   }
 
   async findOne(id: number) {
