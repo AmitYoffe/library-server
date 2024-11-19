@@ -2,25 +2,22 @@ import { Body, Controller, Get, Param, ParseIntPipe, Post, ValidationPipe } from
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserService } from './user.service';
 
-@Controller('login')
+@Controller()
 export class UserController {
     constructor(
         private readonly userService: UserService,
     ) { }
 
-    @Get(':id')
-    findOne(@Param('id', ParseIntPipe) id: number) {
-        return this.userService.findOne(id);
+    @Get('login/:userId')
+    findOne(@Param('userId', ParseIntPipe) userId: number) {
+        return this.userService.findOne(userId);
     }
 
-    @Post()
-    create(@Body(ValidationPipe) user: CreateUserDto) {
-        return this.userService.create(user);
+    @Post('register')
+    register(@Body(ValidationPipe) user: CreateUserDto) {
+        return this.userService.register(user);
     }
 }
 
-// Naming is problematic, create should be register
-// I should add a permission check for EVERY request,
-// need to check if a user is even logged in.
-
-// Todo: I should have a log in route and a user registration route ( Backend only )
+// Todo: I should add a permission check for EVERY request throughout the project,
+// need to check if a user is even logged in and apply logic accordingly.

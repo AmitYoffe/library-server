@@ -8,7 +8,6 @@ export class CreateBookDto {
 
   @IsNotEmpty()
   writer: WriterEntity;
-  // picture: string;
 
   @IsNumber()
   count: number;

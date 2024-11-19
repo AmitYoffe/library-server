@@ -11,5 +11,4 @@ export class CreateWriterDto {
   lastName: string;
 
   books: BookEntity[];
-  // profilePicture: string;
 }

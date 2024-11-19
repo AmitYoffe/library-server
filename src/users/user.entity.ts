@@ -18,9 +18,18 @@ export class UserEntity extends BaseEntity {
   })
   lastName: string;
 
+  @Column({
+    type: 'boolean',
+  })
+  isAdmin: boolean;
+
+  @Column({
+    type: 'text',
+  })
+  password: string; // should have some salt?
+
   @OneToMany(() => BorrowEntity, (borrow) => borrow.user)
   borrows: BorrowEntity[];
 }
 
-// add an (IsAdmin: bool )field and use it in the Guard
-// and a password field
+// use IsAdmin in the Guard

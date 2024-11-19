@@ -12,13 +12,16 @@ export class UserService {
     ) { }
 
     async findOne(id: number) {
-        const user = await this.userRepository.findOneBy({ id });
+        const queryBuilder = this.userRepository.createQueryBuilder('user');
+        queryBuilder.where('user.id = :userId', { userId: id })
+
+        const user = await queryBuilder.getOne()
         if (!user) throw new NotFoundException(`User With Id of ${id} Not Found`);
 
         return user;
     }
 
-    async create(userDto: CreateUserDto) {
+    async register(userDto: CreateUserDto) {
         const user = this.userRepository.create(userDto)
         return await this.userRepository.save(user)
     }
