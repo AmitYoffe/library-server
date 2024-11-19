@@ -1,10 +1,10 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { allowedOrigins } from './config/allowedOrigins';
 
+//todo:  pass the url to .env 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors(allowedOrigins[0]);
+  app.enableCors({ origin: 'https://localhost:3000' });
   await app.listen(3000);
 }
 bootstrap();

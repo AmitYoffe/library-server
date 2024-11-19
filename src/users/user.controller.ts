@@ -18,3 +18,9 @@ export class UserController {
         return this.userService.create(user);
     }
 }
+
+// Naming is problematic, create should be register
+// I should add a permission check for EVERY request,
+// need to check if a user is even logged in.
+
+// Todo: I should have a log in route and a user registration route ( Backend only )
