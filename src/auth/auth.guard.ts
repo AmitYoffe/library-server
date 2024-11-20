@@ -1,22 +1,50 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
-import { Observable } from 'rxjs';
-// import { JwtService } from '@nestjs/jwt';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest();
-    const isUserAdmin: boolean = request.user.isAdmin;
-    // request.user is undefined for some reason
+  constructor(
+    private jwtService: JwtService,
+    private configService: ConfigService
+  ) { }
 
-    return isUserAdmin;
-    // return true;
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const token = this.extractTokenFromHeader(request);
+    if (!token) {
+      throw new UnauthorizedException();
+    }
+
+    try {
+      const payload = await this.jwtService.verifyAsync(
+        token,
+        {
+          secret: this.configService.get("JWT_SECRET")
+        }
+      );
+      request['user'] = payload;
+    } catch {
+      throw new UnauthorizedException();
+    }
+
+    // Todo: apply logic that checks if user is admin for some group of requests on the page
+    //
+    // const isUserAdmin: boolean = request.user.isAdmin;
+    // return isUserAdmin;
+    return true;
+  }
+
+  private extractTokenFromHeader({ headers }: Request): string | undefined {
+    const authorizationHeader = headers['authorization'];
+
+    if (!authorizationHeader) {
+      return undefined;
+    }
+
+    const [type, token] = authorizationHeader.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }
 
-
-// Todo: I should add an isAdmin permission check for EVERY request throughout the project,
-// need to also check if a user is even logged in and apply logic accordingly.
-
+// Todo: need to also check if a user is even logged in and apply logic accordingly.

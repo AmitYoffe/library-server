@@ -18,8 +18,9 @@ general todos:
 3) Make sure I Implement comments from both sakads !
 4) Enforce eslint, ido gave me an example file
 5) Add logger middleware
-6) 
+6) Learn & implement interceptors
 7) 
+8) 
 
 21/11 Todo:
 1) Implement Guard, use jwt

@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
 
 @Injectable()
@@ -11,18 +10,19 @@ export class UserService {
         private userRepository: Repository<UserEntity>,
     ) { }
 
-    async findOne(id: number) {
+    async findOne(username: string) {
         const queryBuilder = this.userRepository.createQueryBuilder('user');
-        queryBuilder.where('user.id = :userId', { userId: id })
+        queryBuilder.where('user.username = :username', { username });
 
-        const user = await queryBuilder.getOne()
-        if (!user) throw new NotFoundException(`User With Id of ${id} Not Found`);
+        const user = await queryBuilder.getOne();
+        if (!user) throw new NotFoundException(`User with username ${username} not found`);
 
         return user;
     }
 
-    async register(userDto: CreateUserDto) {
-        const user = this.userRepository.create(userDto)
-        return await this.userRepository.save(user)
-    }
+    // async register(userDto: CreateUserDto) {
+    //     const user = this.userRepository.create(userDto)
+    //     return await this.userRepository.save(user)
+    //   }
+    // Don't know where to push this logic
 }

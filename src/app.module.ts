@@ -2,21 +2,23 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController, AppService } from './';
-import { AuthGuard } from './auth/auth.guard';
-import { BooksModule } from './books/books.module';
-import { BorrowsModule } from './borrows/borrows.module';
+import { BooksModule } from './books';
+import { BorrowsModule } from './borrows';
 import { typeOrmConfigAsync } from './config/typeorm.config';
 import { HttpExceptionFilter } from './http-exception.filter';
-import { UserModule } from './users/user.module';
-import { WritersModule } from './writers/writers.module';
+import { WritersModule } from './writers';
+import { AuthModule } from './auth/auth.module';
+import { AuthGuard } from './auth/auth.guard';
+import { UserModule } from './users';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync(typeOrmConfigAsync),
+    AuthModule,
     BooksModule,
     WritersModule,
     BorrowsModule,
-    UserModule
+    UserModule,
   ],
   controllers: [AppController],
   providers: [
@@ -25,6 +27,10 @@ import { WritersModule } from './writers/writers.module';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    // The authguard is causing some module import issue:
+    // Error: Nest can't resolve dependencies of the AuthGuard (?, ConfigService). 
+    // Please make sure that the argument JwtService at index [0] is available in the AppModule context.
+
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,

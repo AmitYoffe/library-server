@@ -11,12 +11,7 @@ export class UserEntity extends BaseEntity {
   @Column({
     type: 'text',
   })
-  firstName: string;
-
-  @Column({
-    type: 'text',
-  })
-  lastName: string;
+  username: string;
 
   @Column({
     type: 'boolean',
@@ -26,7 +21,7 @@ export class UserEntity extends BaseEntity {
   @Column({
     type: 'text',
   })
-  password: string; // should have some salt?
+  password: string;
 
   @OneToMany(() => BorrowEntity, (borrow) => borrow.user)
   borrows: BorrowEntity[];
