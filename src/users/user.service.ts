@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { UserEntity } from './user.entity';
+import { CreateUserDto, UserEntity } from './';
 
 @Injectable()
 export class UserService {
@@ -20,9 +20,8 @@ export class UserService {
         return user;
     }
 
-    // async register(userDto: CreateUserDto) {
-    //     const user = this.userRepository.create(userDto)
-    //     return await this.userRepository.save(user)
-    //   }
-    // Don't know where to push this logic
+    async register(userDto: CreateUserDto) {
+        const user = this.userRepository.create(userDto)
+        return await this.userRepository.save(user)
+    }
 }

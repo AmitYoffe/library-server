@@ -13,14 +13,13 @@ import { AuthController, AuthGuard, AuthService } from './';
             useFactory: async (configService: ConfigService) => {
                 return {
                     secret: configService.get<string>('JWT_SECRET'),
-                    signOptions: { expiresIn: '1h' },
+                    signOptions: { expiresIn: '12h' },
                 };
             },
         }),
     ],
     providers: [AuthService],
     controllers: [AuthController],
-    // exports: [AuthGuard]
 })
 
 export class AuthModule { }

@@ -6,7 +6,6 @@ export class CreateUserDto {
     username: string;
 
     @IsBoolean()
-    @IsNotEmpty()
     isAdmin: boolean;
 
     @IsString()

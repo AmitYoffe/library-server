@@ -1,15 +1,17 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
+import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController, AppService } from './';
+import { AuthGuard } from './auth/auth.guard';
+import { AuthModule } from './auth/auth.module';
 import { BooksModule } from './books';
 import { BorrowsModule } from './borrows';
 import { typeOrmConfigAsync } from './config/typeorm.config';
 import { HttpExceptionFilter } from './http-exception.filter';
-import { WritersModule } from './writers';
-import { AuthModule } from './auth/auth.module';
-import { AuthGuard } from './auth/auth.guard';
 import { UserModule } from './users';
+import { WritersModule } from './writers';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { UserModule } from './users';
     WritersModule,
     BorrowsModule,
     UserModule,
+    JwtModule,
+    ConfigModule
   ],
   controllers: [AppController],
   providers: [
@@ -27,10 +31,6 @@ import { UserModule } from './users';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
-    // The authguard is causing some module import issue:
-    // Error: Nest can't resolve dependencies of the AuthGuard (?, ConfigService). 
-    // Please make sure that the argument JwtService at index [0] is available in the AppModule context.
-
     {
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
