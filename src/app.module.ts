@@ -1,4 +1,5 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -8,10 +9,9 @@ import { AuthModule } from './auth/auth.module';
 import { BooksModule } from './books';
 import { BorrowsModule } from './borrows';
 import { typeOrmConfigAsync } from './config/typeorm.config';
-import { HttpExceptionFilter } from './http-exception.filter';
+import { HttpExceptionFilter, LoggerMiddleware } from './middleware';
 import { UserModule } from './users';
 import { WritersModule } from './writers';
-import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -38,7 +38,11 @@ import { ConfigModule } from '@nestjs/config';
   ]
 })
 
-export class AppModule { }
+export class AppModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(LoggerMiddleware).forRoutes('*')
+  }
+}
 
 // APP_FILTER to make it a global filter class
 // useClass is used to instantiate the privided class if necessary
