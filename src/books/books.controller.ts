@@ -31,6 +31,11 @@ export class BooksController {
     return this.bookService.findOne(id);
   }
 
+  @Get('borrow/:bookId')
+  getBorrowers(@Param('bookId', ParseIntPipe) bookId: number) {
+    return this.borrowsService.getBorrowersByBook(bookId);
+  }
+
   @Post()
   create(@Body(ValidationPipe) book: CreateBookDto) {
     return this.bookService.create(book);

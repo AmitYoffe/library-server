@@ -6,23 +6,20 @@ Concepts for implementation in the project:
 - module ✅
 - exception filter ✅ 
 - provider, provider factory ✅
+- Guard ( use jwt ), middleware, interceptor (and their differences) ✅
 - scopes ( specific to NestJs ) 🤔 - return to it at the end 
-- Guard ( use jwt ), middleware, interceptor (and their differences) 
 - unit tests 🤔?
 
 general todos:
 1) index export files
-2) Now i need to check if i can pull all of the book borrowed by a user, or all the users that borrowed the book.
-- ( Only work on the typeOrm SQL queries that are necessary according to the figma plan )
+2) Enforce eslint, ido gave me an example file
 3) Make sure I Implement comments from both sakads !
-4) Enforce eslint, ido gave me an example file
+4) 
 5) 
-6) 
-7) 
 
 24/11 Todo:
-1) Learn about interceptors but do not implement
-2) I need to actually understand the whole db - repository configuration.
-3) 
+1) I need to actually understand the whole db - repository configuration.
+2) Pull all the users that borrowed the book in a route
+3) Should add logic that minuses 1 the count of a borrowed book
 
 ----------------------------------------------------------------------------------------------------------------------------------
