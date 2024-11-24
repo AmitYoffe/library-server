@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookEntity } from 'src/books/book.entity';
 import { UserEntity } from 'src/users';
@@ -26,12 +26,24 @@ export class BorrowsService {
       throw new NotFoundException(`Book with ID ${bookId} not found`);
     }
 
+    if (book.count <= 0) {
+      throw new BadRequestException(`No copies of the book are available for borrowing`);
+    }
+
+    book.count -= 1
+
     const borrow = this.borrowsRepository.create({
       userId,
       book,
     });
 
+    await this.booksRepository.save(book);
     return await this.borrowsRepository.save(borrow)
+  }
+
+  async returnBook({ bookId, userId }: CreateBorrowDto) {
+    // CreateBorrowDto name is incorrect
+    console.log(`UserId ${userId} returned bookId ${bookId} `)
   }
 
   async getBorrowersByBook(bookId: number) {
@@ -40,6 +52,7 @@ export class BorrowsService {
       .where('borrow.bookId = :bookId', { bookId })
       .getMany();
 
+    // do not return reponses to the user!
     if (borrowsByBookId.length === 0) {
       throw new NotFoundException("This book hasn't been borrowed yet");
     }
@@ -48,10 +61,13 @@ export class BorrowsService {
     const users = await this.userRepository.find({
       where: { id: In(userIds) },
       select: ['id', 'username', 'borrows']
-      // take users without their isAdmin + password fields
+      // why can't i see the borrows field?
     }
     );
 
     return users;
   }
 }
+
+// TYPEORM SHOULD NOT EXIST INSIDE SERVICES ! ! !
+// IT SHOULD BE HIDDEN IN MY SECRET REPOSITORIES MUAHAHAHAH

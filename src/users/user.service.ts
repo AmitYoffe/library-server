@@ -7,9 +7,10 @@ import { CreateUserDto, UserEntity } from './';
 export class UserService {
     constructor(
         @InjectRepository(UserEntity)
-        private userRepository: Repository<UserEntity>,
+    private userRepository: Repository<UserEntity>,
     ) { }
 
+    // do not use query builder here - Rony claims i can do it one line
     async findOne(username: string) {
         const queryBuilder = this.userRepository.createQueryBuilder('user');
         queryBuilder.where('user.username = :username', { username });

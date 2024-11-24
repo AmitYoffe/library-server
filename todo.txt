@@ -8,18 +8,18 @@ Concepts for implementation in the project:
 - provider, provider factory ✅
 - Guard ( use jwt ), middleware, interceptor (and their differences) ✅
 - scopes ( specific to NestJs ) 🤔 - return to it at the end 
-- unit tests 🤔?
+- unit tests ( Write and test some service & controller )
 
 general todos:
 1) index export files
 2) Enforce eslint, ido gave me an example file
 3) Make sure I Implement comments from both sakads !
-4) 
-5) 
+4) Write and test some service & controller
+5) Make my own repositories on top of the the ones TypeOrm gives instead of using the TypeOrm one directly
+6) See which classes i should make global so i won't need to import them in many different places
 
-24/11 Todo:
+25/11 Todo:
 1) I need to actually understand the whole db - repository configuration.
-2) Pull all the users that borrowed the book in a route
-3) Should add logic that minuses 1 the count of a borrowed book
-
+2) Should add logic that returns a book and incremenets amount by +1 ( how will i handle it inside the Borrows table?)
+3) Finish reading about Interceptor
 ----------------------------------------------------------------------------------------------------------------------------------

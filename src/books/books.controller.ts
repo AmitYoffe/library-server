@@ -49,6 +49,14 @@ export class BooksController {
     return this.borrowsService.borrowBook({ bookId, userId });
   }
 
+  @Post('return/:bookId/:userId')
+  return(
+    @Param('bookId', ParseIntPipe) bookId: number,
+    @Param('userId', ParseIntPipe) userId: number,
+  ) {
+    return this.borrowsService.returnBook({ bookId, userId });
+  }
+
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
