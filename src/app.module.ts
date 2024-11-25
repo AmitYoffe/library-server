@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
@@ -36,6 +36,7 @@ import { WritersModule } from './writers';
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
+    Logger,
   ]
 })
 
@@ -44,8 +45,3 @@ export class AppModule {
     consumer.apply(LoggerMiddleware).forRoutes('*')
   }
 }
-
-// APP_FILTER to make it a global filter class
-// useClass is used to instantiate the privided class if necessary
-
-// Read up on the providers docs

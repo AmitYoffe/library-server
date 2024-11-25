@@ -1,29 +1,33 @@
-
-import { ExceptionFilter, Catch, ArgumentsHost, HttpException, HttpStatus } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
+    constructor(private readonly logger: Logger) { }
+
     catch(exception: HttpException, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
-        const status = exception.getStatus();
+        const status: HttpStatus = exception.getStatus();
 
         const responseBody = exception.getResponse();
         const message = (typeof responseBody === 'string') ? responseBody : (responseBody['message'] || responseBody);
         const error = (typeof responseBody === 'object' && responseBody['error']) ? responseBody['error'] : 'Error';
 
 
-        response.json({
+        const exceptionInfo = {
             message: message,
             error: error,
             statusCode: status,
             timestamp: new Date().toLocaleTimeString(),
             path: request.url,
-        })
+        }
 
-        // Do not return a reponse json to the user, just a status code.
-        // just use the nest logger for my use
+        this.logger.error(exceptionInfo);
+        response.status(status).send()
     }
 }
+
+// Do not return a reponse json to the user, just a status code.
+// just use the nest logger for my use

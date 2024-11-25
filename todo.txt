@@ -20,6 +20,6 @@ general todos:
 
 25/11 Todo:
 1) I need to actually understand the whole db - repository configuration.
-2) Should add logic that returns a book and incremenets amount by +1 ( how will i handle it inside the Borrows table?)
+2) Figure how will i handle returning a book inside the Borrows table?
 3) Finish reading about Interceptor
 ----------------------------------------------------------------------------------------------------------------------------------

@@ -4,7 +4,7 @@ import { BookEntity } from 'src/books/book.entity';
 import { UserEntity } from 'src/users';
 import { In, Repository } from 'typeorm';
 import { BorrowEntity } from './borrow.entity';
-import CreateBorrowDto from './dto/create-borrow.dto';
+import BorrowDto from './dto/borrow.dto';
 
 @Injectable()
 export class BorrowsService {
@@ -19,7 +19,7 @@ export class BorrowsService {
     private userRepository: Repository<UserEntity>,
   ) { }
 
-  async borrowBook({ bookId, userId }: CreateBorrowDto) {
+  async borrowBook({ bookId, userId }: BorrowDto) {
     const book = await this.booksRepository.findOne({ where: { id: bookId } });
 
     if (!book) {
@@ -41,8 +41,17 @@ export class BorrowsService {
     return await this.borrowsRepository.save(borrow)
   }
 
-  async returnBook({ bookId, userId }: CreateBorrowDto) {
-    // CreateBorrowDto name is incorrect
+  async returnBook({ bookId, userId }: BorrowDto) {
+    const book = await this.booksRepository.findOne({ where: { id: bookId } });
+
+    if (!book) {
+      throw new NotFoundException(`Book with ID ${bookId} not found`);
+    }
+
+    book.count += 1;
+    await this.booksRepository.save(book);
+    // Currently a user can return books that he didn't even borrow, and increse the count of the book.
+    // Currently there is no connection between the borrows table and the books table...
     console.log(`UserId ${userId} returned bookId ${bookId} `)
   }
 
@@ -61,7 +70,7 @@ export class BorrowsService {
     const users = await this.userRepository.find({
       where: { id: In(userIds) },
       select: ['id', 'username', 'borrows']
-      // why can't i see the borrows field?
+      // Don't see the borrows field - maybe make some query to show it
     }
     );
 
