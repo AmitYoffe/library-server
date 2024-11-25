@@ -42,5 +42,3 @@ export class AuthGuard implements CanActivate {
     return type === 'Bearer' ? token : undefined;
   }
 }
-
-// need to also check if a user is even logged in and apply logic accordingly.
