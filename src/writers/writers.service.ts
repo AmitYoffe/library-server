@@ -1,58 +1,38 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 import { CreateWriterDto, SearchWriterDto, UpdateWriterDto } from './dto';
 import { WriterEntity } from './writer.entity';
+import { WritersRepository } from './writers.repository';
 
 @Injectable()
 export class WritersService {
   constructor(
-    @InjectRepository(WriterEntity)
-    private writersRepository: Repository<WriterEntity>,
+    private writersRepository: WritersRepository,
   ) { }
 
   async findAll({ id, firstName, lastName }: SearchWriterDto): Promise<WriterEntity[]> {
-    const queryBuilder = this.writersRepository.createQueryBuilder('writer');
-
-    if (id) {
-      queryBuilder.andWhere('writer.id = :writerId', { writerId: id });
-    }
-
-    if (firstName) {
-      queryBuilder.andWhere('writer.firstName ILIKE :firstName', { firstName: `%${firstName}%` });
-    }
-
-    if (lastName) {
-      queryBuilder.andWhere('writer.lastName ILIKE :lastName', { lastName: `%${lastName}%` });
-    }
-
-    return await queryBuilder.getMany();
+    return await this.writersRepository.findAll({ id, firstName, lastName });
   }
 
   async findOne(id: number) {
-    const writer = await this.writersRepository.findOne({
-      where: { id },
-      relations: ['books']
-    });
-
+    const writer = await this.writersRepository.findOne(id);
     if (!writer) throw new NotFoundException(`Writer With Id of ${id} Not Found`);
 
     return writer;
   }
 
   async create(writerDto: CreateWriterDto) {
-    const writer = this.writersRepository.create(writerDto);
-    return await this.writersRepository.save(writer)
+    return await this.writersRepository.create(writerDto)
   }
 
   async update(id: number, updatedWriter: UpdateWriterDto) {
-    const writerToUpdate = await this.writersRepository.findOneBy({ id });
+    const writerToUpdate = await this.writersRepository.findOne(id);
+    
     if (!writerToUpdate) {
       throw new NotFoundException(`Writer with ID ${id} not found`);
     }
     Object.assign(writerToUpdate, updatedWriter);
 
-    return await this.writersRepository.save(writerToUpdate);
+    return await this.writersRepository.update(writerToUpdate);
   }
 
   async delete(id: number) {

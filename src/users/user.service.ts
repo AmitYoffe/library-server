@@ -1,28 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreateUserDto, UserEntity } from './';
+import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './';
+import { UsersRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
     constructor(
-        @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+        private userRepository: UsersRepository,
     ) { }
 
-    // do not use query builder here - Rony claims i can do it one line
     async findOne(username: string) {
-        const queryBuilder = this.userRepository.createQueryBuilder('user');
-        queryBuilder.where('user.username = :username', { username });
-
-        const user = await queryBuilder.getOne();
-        if (!user) throw new NotFoundException(`User with username ${username} not found`);
-
-        return user;
+        return await this.userRepository.findOne(username)
     }
 
     async register(userDto: CreateUserDto) {
-        const user = this.userRepository.create(userDto)
-        return await this.userRepository.save(user)
+        return await this.userRepository.register(userDto)
     }
 }

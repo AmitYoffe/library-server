@@ -28,6 +28,3 @@ export class HttpExceptionFilter implements ExceptionFilter {
         response.status(status).send()
     }
 }
-
-// Do not return a reponse json to the user, just a status code.
-// just use the nest logger for my use

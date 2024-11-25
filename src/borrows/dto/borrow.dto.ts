@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export default class BorrowDto {
+export class BorrowDto {
     @IsNumber()
     @IsNotEmpty()
     userId: number;

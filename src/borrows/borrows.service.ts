@@ -1,26 +1,19 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { BookEntity } from 'src/books/book.entity';
-import { UserEntity } from 'src/users';
-import { In, Repository } from 'typeorm';
-import { BorrowEntity } from './borrow.entity';
-import BorrowDto from './dto/borrow.dto';
+import { BooksRepository } from 'src/books/books.repository';
+import { UsersRepository } from 'src/users';
+import { BorrowsRepository } from './borrows.repository';
+import { BorrowDto } from './dto/borrow.dto';
 
 @Injectable()
 export class BorrowsService {
   constructor(
-    @InjectRepository(BorrowEntity)
-    private borrowsRepository: Repository<BorrowEntity>,
-
-    @InjectRepository(BookEntity)
-    private booksRepository: Repository<BookEntity>,
-
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>,
+    private borrowsRepository: BorrowsRepository,
+    private booksRepository: BooksRepository,
+    private userRepository: UsersRepository,
   ) { }
 
   async borrowBook({ bookId, userId }: BorrowDto) {
-    const book = await this.booksRepository.findOne({ where: { id: bookId } });
+    const book = await this.booksRepository.findOne(bookId);
 
     if (!book) {
       throw new NotFoundException(`Book with ID ${bookId} not found`);
@@ -30,36 +23,29 @@ export class BorrowsService {
       throw new BadRequestException(`No copies of the book are available for borrowing`);
     }
 
-    book.count -= 1
+    book.count -= 1;
 
-    const borrow = this.borrowsRepository.create({
-      userId,
-      book,
-    });
+    await this.borrowsRepository.create({ userId, bookId });
 
-    await this.booksRepository.save(book);
-    return await this.borrowsRepository.save(borrow)
+    return await this.booksRepository.update(bookId, book);
   }
 
   async returnBook({ bookId, userId }: BorrowDto) {
-    const book = await this.booksRepository.findOne({ where: { id: bookId } });
+    const book = await this.booksRepository.findOne(bookId);
 
     if (!book) {
       throw new NotFoundException(`Book with ID ${bookId} not found`);
     }
 
     book.count += 1;
-    await this.booksRepository.save(book);
+    await this.booksRepository.update(bookId, book);
     // Currently a user can return books that he didn't even borrow, and increse the count of the book.
     // Currently there is no connection between the borrows table and the books table...
     console.log(`UserId ${userId} returned bookId ${bookId} `)
   }
 
   async getBorrowersByBook(bookId: number) {
-    const borrowsByBookId = await this.borrowsRepository
-      .createQueryBuilder('borrow')
-      .where('borrow.bookId = :bookId', { bookId })
-      .getMany();
+    const borrowsByBookId = await this.borrowsRepository.getBorrowersByBook(bookId)
 
     // do not return reponses to the user!
     if (borrowsByBookId.length === 0) {
@@ -67,16 +53,8 @@ export class BorrowsService {
     }
 
     const userIds = borrowsByBookId.map(borrow => borrow.userId);
-    const users = await this.userRepository.find({
-      where: { id: In(userIds) },
-      select: ['id', 'username', 'borrows']
-      // Don't see the borrows field - maybe make some query to show it
-    }
-    );
+    const users = await this.userRepository.findMany(userIds);
 
     return users;
   }
 }
-
-// TYPEORM SHOULD NOT EXIST INSIDE SERVICES ! ! !
-// IT SHOULD BE HIDDEN IN MY SECRET REPOSITORIES MUAHAHAHAH
