@@ -46,7 +46,7 @@ export class BorrowsService {
 
   async getBorrowersByBook(bookId: number) {
     const borrowsByBookId = await this.borrowsRepository.getBorrowersByBook(bookId)
-
+    console.log("borrowsByBookId: ", borrowsByBookId)
     // do not return reponses to the user!
     if (borrowsByBookId.length === 0) {
       throw new NotFoundException("This book hasn't been borrowed yet");
