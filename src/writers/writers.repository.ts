@@ -11,7 +11,7 @@ export class WritersRepository {
         private readonly writersRepository: Repository<WriterEntity>,
     ) { }
 
-    async findAll({ id, firstName, lastName }: SearchWriterDto): Promise<WriterEntity[]> {
+    findAll({ id, firstName, lastName }: SearchWriterDto): Promise<WriterEntity[]> {
         const queryBuilder = this.writersRepository.createQueryBuilder('writer');
 
         if (id) {
@@ -26,11 +26,11 @@ export class WritersRepository {
             queryBuilder.andWhere('writer.lastName ILIKE :lastName', { lastName: `%${lastName}%` });
         }
 
-        return await queryBuilder.getMany();
+        return queryBuilder.getMany();
     }
 
-    async findOne(id: number) {
-        const writer = await this.writersRepository.findOne({
+    findOne(id: number) {
+        const writer = this.writersRepository.findOne({
             where: { id },
             relations: ['books']
         });
@@ -38,16 +38,16 @@ export class WritersRepository {
         return writer;
     }
 
-    async create(writerDto: CreateWriterDto) {
+    create(writerDto: CreateWriterDto) {
         const writer = this.writersRepository.create(writerDto);
-        return await this.writersRepository.save(writer)
+        return this.writersRepository.save(writer)
     }
 
-    async update(updatedWriter: UpdateWriterDto) {
-        return await this.writersRepository.save(updatedWriter);
+    update(updatedWriter: UpdateWriterDto) {
+        return this.writersRepository.save(updatedWriter);
     }
 
-    async delete(id: number) {
-        await this.writersRepository.delete(id);
+    delete(id: number) {
+        return this.writersRepository.delete(id);
     }
 }

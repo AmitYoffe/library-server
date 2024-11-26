@@ -18,8 +18,8 @@ export class WritersController {
   constructor(private readonly writerService: WritersService) { }
 
   @Get()
-  async findAll(@Query(ValidationPipe) searchQuery: SearchWriterDto) {
-    return await this.writerService.findAll(searchQuery);
+  findAll(@Query(ValidationPipe) searchQuery: SearchWriterDto) {
+    return this.writerService.findAll(searchQuery);
   }
 
   @Get(':id')
@@ -29,7 +29,7 @@ export class WritersController {
 
   @Post()
   create(@Body(ValidationPipe) writer: CreateWriterDto) {
-    return this.writerService.create(writer);
+    this.writerService.create(writer);
   }
 
   @Patch(':id')
@@ -37,11 +37,11 @@ export class WritersController {
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updatedWriter: UpdateWriterDto,
   ) {
-    return this.writerService.update(id, updatedWriter);
+    this.writerService.update(id, updatedWriter);
   }
 
   @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number) {
-    return this.writerService.delete(id);
+    this.writerService.delete(id);
   }
 }

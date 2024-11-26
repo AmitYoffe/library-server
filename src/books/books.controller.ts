@@ -22,8 +22,8 @@ export class BooksController {
   ) { }
 
   @Get()
-  async findAll(@Query(ValidationPipe) searchQuery: SearchBookDto) {
-    return await this.bookService.findAll(searchQuery);
+  findAll(@Query(ValidationPipe) searchQuery: SearchBookDto) {
+    return this.bookService.findAll(searchQuery);
   }
 
   @Get(':id')

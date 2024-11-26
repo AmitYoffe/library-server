@@ -35,11 +35,13 @@ export class BorrowsService {
       throw new NotFoundException(`Book with ID ${bookId} not found`);
     }
 
+    // This crashes the server
     const borrowCount = await this.borrowsRepository.countUserBorrows({ bookId, userId });
     if (borrowCount === 0) {
       throw new BadRequestException('User did not borrow this book');
     }
 
+    // This crashes the server
     const bookStockCount = book.count - borrowCount;
     if (bookStockCount <= 0) {
       throw new BadRequestException("Can't return book: no stock available");
@@ -51,13 +53,12 @@ export class BorrowsService {
 
   async getBorrowersByBook(bookId: number) {
     const borrowsByBookId = await this.borrowsRepository.getBorrowersByBook(bookId)
-    // do not return reponses to the user!
     if (borrowsByBookId.length === 0) {
       throw new NotFoundException("This book hasn't been borrowed yet");
     }
 
     const userIds = borrowsByBookId.map(borrow => borrow.userId);
-    const users = await this.userRepository.findMany(userIds);
+    const users = this.userRepository.findMany(userIds);
 
     return users;
   }

@@ -9,19 +9,19 @@ export class WritersService {
     private readonly writersRepository: WritersRepository,
   ) { }
 
-  async findAll({ id, firstName, lastName }: SearchWriterDto): Promise<WriterEntity[]> {
-    return await this.writersRepository.findAll({ id, firstName, lastName });
+  findAll({ id, firstName, lastName }: SearchWriterDto): Promise<WriterEntity[]> {
+    return this.writersRepository.findAll({ id, firstName, lastName });
   }
 
-  async findOne(id: number) {
-    const writer = await this.writersRepository.findOne(id);
+  findOne(id: number) {
+    const writer = this.writersRepository.findOne(id);
     if (!writer) throw new NotFoundException(`Writer With Id of ${id} Not Found`);
 
     return writer;
   }
 
-  async create(writerDto: CreateWriterDto) {
-    return await this.writersRepository.create(writerDto)
+  create(writerDto: CreateWriterDto) {
+    this.writersRepository.create(writerDto)
   }
 
   async update(id: number, updatedWriter: UpdateWriterDto) {
@@ -32,10 +32,10 @@ export class WritersService {
     }
     Object.assign(writerToUpdate, updatedWriter);
 
-    return await this.writersRepository.update(writerToUpdate);
+    this.writersRepository.update(writerToUpdate);
   }
 
-  async delete(id: number) {
-    await this.writersRepository.delete(id);
+  delete(id: number) {
+    this.writersRepository.delete(id);
   }
 }

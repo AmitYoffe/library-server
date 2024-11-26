@@ -13,15 +13,14 @@ Concepts for implementation in the project:
 general todos:
 1) Fix bug with index export files
 2) Enforce eslint, ido gave me an example file
-3) Make sure I Implement comments from both sakads !
+3) Make sure I Implement comments from both sakads  -->  read them again 
 4) Write and test some service & controller
-5) Do not return a reponses to the client, just a status code ( some exception are allowed ).
+5) 
 6) 
 
 26/11 Todo:
 1) I need to actually understand the whole db - repository configuration.
 2) See which classes i should make global so i won't need to import them in many different places
-3) 
+3) Understand what maxim meant by "async local storage" 
 4) 
 ----------------------------------------------------------------------------------------------------------------------------------
-async local storage?

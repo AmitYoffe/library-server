@@ -17,7 +17,7 @@ export class UsersRepository {
         return user;
     }
 
-    async findMany(userIds: number[]) {
+    findMany(userIds: number[]) {
         const users = this.userRepository.find({
             where: { id: In(userIds) },
             select: ['id', 'username'],
@@ -27,8 +27,8 @@ export class UsersRepository {
         return users
     }
 
-    async register(userDto: CreateUserDto) {
+    register(userDto: CreateUserDto) {
         const user = this.userRepository.create(userDto)
-        return await this.userRepository.save(user)
+        return this.userRepository.save(user)
     }
 }

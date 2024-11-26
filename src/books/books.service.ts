@@ -10,24 +10,24 @@ export class BooksService {
     private readonly writersRepository: WritersRepository
   ) { }
 
-  async findAll({ title, id }: SearchBookDto) {
-    return await this.booksRepository.findAll({ title, id });
+  findAll({ title, id }: SearchBookDto) {
+    return this.booksRepository.findAll({ title, id });
   }
 
-  async findOne(id: number) {
-    const book = await this.booksRepository.findOne(id);
+  findOne(id: number) {
+    const book = this.booksRepository.findOne(id);
     if (!book) throw new NotFoundException(`Book With Id of ${id} Not Found`);
 
     return book;
   }
 
-  async create(bookDto: CreateBookDto) {
-    const writer = await this.writersRepository.findOne(bookDto.writerId);
+  create(bookDto: CreateBookDto) {
+    const writer = this.writersRepository.findOne(bookDto.writerId);
     if (!writer) {
       throw new NotFoundException(`Writer not found`);
     }
 
-    await this.booksRepository.create(bookDto)
+    this.booksRepository.create(bookDto)
   }
 
   async update(id: number, updatedBookDto: UpdateBookDto) {
@@ -38,9 +38,7 @@ export class BooksService {
     }
   }
 
-  async delete(id: number) {
-    await this.booksRepository.delete(id);
+  delete(id: number) {
+    this.booksRepository.delete(id);
   }
 }
-
-// remove unnecessary awaits and syncs
