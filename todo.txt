@@ -11,16 +11,17 @@ Concepts for implementation in the project:
 - unit tests ( Write and test some service & controller )
 
 general todos:
-1) index export files
+1) Fix bug with index export files
 2) Enforce eslint, ido gave me an example file
 3) Make sure I Implement comments from both sakads !
 4) Write and test some service & controller
 5) Do not return a reponses to the client, just a status code ( some exception are allowed ).
-6) See which classes i should make global so i won't need to import them in many different places
+6) 
 
 26/11 Todo:
 1) I need to actually understand the whole db - repository configuration.
-2) Figure how will i handle returning a book inside the Borrows table?
-3) Finish reading about Interceptor
+2) See which classes i should make global so i won't need to import them in many different places
+3) 
 4) 
 ----------------------------------------------------------------------------------------------------------------------------------
+async local storage?
