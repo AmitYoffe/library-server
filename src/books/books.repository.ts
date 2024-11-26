@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { BookEntity } from "./book.entity";
-import { CreateBookDto, UpdateBookDto, SearchBookDto } from "./dto";
+import { CreateBookDto, SearchBookDto, UpdateBookDto } from "./dto";
 
 @Injectable()
 export class BooksRepository {
@@ -11,7 +11,7 @@ export class BooksRepository {
         private readonly booksRepository: Repository<BookEntity>,
     ) { }
 
-    async findAll({ title, id }: SearchBookDto) {
+    findAll({ title, id }: SearchBookDto) {
         const queryBuilder = this.booksRepository.createQueryBuilder("book");
 
         if (id) {
@@ -22,16 +22,16 @@ export class BooksRepository {
             queryBuilder.andWhere("book.title ILIKE :title", { title: `%${title}%` });
         }
 
-        return await queryBuilder.getMany();
+        return queryBuilder.getMany();
     }
 
-    async findOne(bookId: number) {
-        return await this.booksRepository.findOneBy({ id: bookId });
+    findOne(bookId: number) {
+        return this.booksRepository.findOneBy({ id: bookId });
     }
 
-    async create(bookDto: CreateBookDto) {
+    create(bookDto: CreateBookDto) {
         const book = this.booksRepository.create(bookDto);
-        return await this.booksRepository.save(book);
+        return this.booksRepository.save(book);
     }
 
     async update(id: number, updatedBookDto: UpdateBookDto) {
@@ -41,10 +41,10 @@ export class BooksRepository {
         }
         Object.assign(bookToUpdate, updatedBookDto);
 
-        return await this.booksRepository.save(bookToUpdate);
+        return this.booksRepository.save(bookToUpdate);
     }
 
-    async delete(id: number) {
-        return await this.booksRepository.delete(id);
+    delete(id: number) {
+        return this.booksRepository.delete(id);
     }
 }

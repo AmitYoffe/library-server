@@ -38,16 +38,16 @@ export class BooksController {
 
   @Post()
   create(@Body(ValidationPipe) book: CreateBookDto) {
-    return this.bookService.create(book);
+    this.bookService.create(book);
   }
 
-  // make these routes more RESTy
+  // make these routes more RESTy - read about REST api conventions
   @Post('borrow/:bookId/:userId')
   borrow(
     @Param('bookId', ParseIntPipe) bookId: number,
     @Param('userId', ParseIntPipe) userId: number,
   ) {
-    return this.borrowsService.borrowBook({ bookId, userId });
+    this.borrowsService.borrowBook({ bookId, userId });
   }
 
   @Post('return/:bookId/:userId')
@@ -55,7 +55,7 @@ export class BooksController {
     @Param('bookId', ParseIntPipe) bookId: number,
     @Param('userId', ParseIntPipe) userId: number,
   ) {
-    return this.borrowsService.returnBook({ bookId, userId });
+    this.borrowsService.returnBook({ bookId, userId });
   }
 
   @Patch(':id')
@@ -63,11 +63,11 @@ export class BooksController {
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updatedBook: UpdateBookDto,
   ) {
-    return this.bookService.update(id, updatedBook);
+    this.bookService.update(id, updatedBook);
   }
 
   @Delete(':id')
   delete(@Param('id', ParseIntPipe) id: number) {
-    return this.bookService.delete(id);
+    this.bookService.delete(id);
   }
 }

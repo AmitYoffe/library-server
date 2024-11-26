@@ -7,7 +7,7 @@ export class CreateBookDto {
   title: string;
 
   @IsNotEmpty()
-  writer: WriterEntity;
+  writerId: number;
 
   @IsNumber()
   count: number;

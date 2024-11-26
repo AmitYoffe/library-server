@@ -8,7 +8,7 @@ import { CreateWriterDto, SearchWriterDto, UpdateWriterDto } from "./dto";
 export class WritersRepository {
     constructor(
         @InjectRepository(WriterEntity)
-        private writersRepository: Repository<WriterEntity>,
+        private readonly writersRepository: Repository<WriterEntity>,
     ) { }
 
     async findAll({ id, firstName, lastName }: SearchWriterDto): Promise<WriterEntity[]> {

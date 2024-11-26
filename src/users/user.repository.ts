@@ -7,7 +7,7 @@ import { CreateUserDto, UserEntity } from "./";
 export class UsersRepository {
     constructor(
         @InjectRepository(UserEntity)
-        private userRepository: Repository<UserEntity>,
+        private readonly userRepository: Repository<UserEntity>,
     ) { }
 
     async findOne(username: string) {

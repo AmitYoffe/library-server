@@ -7,9 +7,9 @@ import { BorrowDto } from './dto/borrow.dto';
 @Injectable()
 export class BorrowsService {
   constructor(
-    private borrowsRepository: BorrowsRepository,
-    private booksRepository: BooksRepository,
-    private userRepository: UsersRepository,
+    private readonly borrowsRepository: BorrowsRepository,
+    private readonly booksRepository: BooksRepository,
+    private readonly userRepository: UsersRepository,
   ) { }
 
   async borrowBook({ bookId, userId }: BorrowDto) {
@@ -20,33 +20,37 @@ export class BorrowsService {
     }
 
     if (book.count <= 0) {
-      throw new BadRequestException(`No copies of the book are available for borrowing`);
+      throw new NotFoundException(`No copies of the book are available for borrowing`);
     }
 
     book.count -= 1;
 
     await this.borrowsRepository.create({ userId, bookId });
-
-    return await this.booksRepository.update(bookId, book);
+    await this.booksRepository.update(bookId, book);
   }
 
   async returnBook({ bookId, userId }: BorrowDto) {
     const book = await this.booksRepository.findOne(bookId);
-
     if (!book) {
       throw new NotFoundException(`Book with ID ${bookId} not found`);
     }
 
+    const borrowCount = await this.borrowsRepository.countUserBorrows({ bookId, userId });
+    if (borrowCount === 0) {
+      throw new BadRequestException('User did not borrow this book');
+    }
+
+    const bookStockCount = book.count - borrowCount;
+    if (bookStockCount <= 0) {
+      throw new BadRequestException("Can't return book: no stock available");
+    }
+
     book.count += 1;
     await this.booksRepository.update(bookId, book);
-    // Currently a user can return books that he didn't even borrow, and increse the count of the book.
-    // Currently there is no connection between the borrows table and the books table...
-    console.log(`UserId ${userId} returned bookId ${bookId} `)
   }
 
   async getBorrowersByBook(bookId: number) {
     const borrowsByBookId = await this.borrowsRepository.getBorrowersByBook(bookId)
-    console.log("borrowsByBookId: ", borrowsByBookId)
     // do not return reponses to the user!
     if (borrowsByBookId.length === 0) {
       throw new NotFoundException("This book hasn't been borrowed yet");

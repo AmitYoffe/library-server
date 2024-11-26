@@ -5,7 +5,7 @@ import { UsersRepository } from './user.repository';
 @Injectable()
 export class UserService {
     constructor(
-        private userRepository: UsersRepository,
+        private readonly userRepository: UsersRepository,
     ) { }
 
     async findOne(username: string) {

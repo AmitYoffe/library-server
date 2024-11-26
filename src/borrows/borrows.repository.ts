@@ -18,13 +18,20 @@ export class BorrowsRepository {
 
     async getBorrowersByBook(bookId: number) {
         const borrowsByBookId = await this.borrowsRepository.find({
-            where: {
-                book: {
-                    id: bookId
-                }
-            },
+            where: { book: { id: bookId } }
         })
 
         return borrowsByBookId
+    }
+
+    async countUserBorrows({ bookId, userId }: BorrowDto) {
+        const borrowCount = await this.borrowsRepository.count({
+            where: {
+                user: { id: userId },
+                book: { id: bookId }
+            }
+        })
+
+        return borrowCount
     }
 }

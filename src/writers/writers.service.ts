@@ -6,7 +6,7 @@ import { WritersRepository } from './writers.repository';
 @Injectable()
 export class WritersService {
   constructor(
-    private writersRepository: WritersRepository,
+    private readonly writersRepository: WritersRepository,
   ) { }
 
   async findAll({ id, firstName, lastName }: SearchWriterDto): Promise<WriterEntity[]> {
@@ -26,7 +26,7 @@ export class WritersService {
 
   async update(id: number, updatedWriter: UpdateWriterDto) {
     const writerToUpdate = await this.writersRepository.findOne(id);
-    
+
     if (!writerToUpdate) {
       throw new NotFoundException(`Writer with ID ${id} not found`);
     }

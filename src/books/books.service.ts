@@ -1,11 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { WritersRepository } from 'src/writers';
 import { BooksRepository } from './books.repository';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 
 @Injectable()
 export class BooksService {
   constructor(
-    private booksRepository: BooksRepository,
+    private readonly booksRepository: BooksRepository,
+    private readonly writersRepository: WritersRepository
   ) { }
 
   async findAll({ title, id }: SearchBookDto) {
@@ -20,18 +22,25 @@ export class BooksService {
   }
 
   async create(bookDto: CreateBookDto) {
-    return await this.booksRepository.create(bookDto)
+    const writer = await this.writersRepository.findOne(bookDto.writerId);
+    if (!writer) {
+      throw new NotFoundException(`Writer not found`);
+    }
+
+    await this.booksRepository.create(bookDto)
   }
 
   async update(id: number, updatedBookDto: UpdateBookDto) {
     const updatedBook = await this.booksRepository.update(id, updatedBookDto);
+
     if (!updatedBook) {
       throw new NotFoundException(`Book with ID ${id} not found`);
     }
-    return updatedBook;
   }
 
   async delete(id: number) {
     await this.booksRepository.delete(id);
   }
 }
+
+// remove unnecessary awaits and syncs
