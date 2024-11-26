@@ -16,16 +16,14 @@ export class BorrowsRepository {
         return await this.borrowsRepository.save(borrowEntity);
     }
 
-    // This returns 1 and not many 
     async getBorrowersByBook(bookId: number) {
         const borrowsByBookId = await this.borrowsRepository.find({
-            where: { id: bookId }
+            where: {
+                book: {
+                    id: bookId
+                }
+            },
         })
-
-        // const borrowsByBookId = await this.borrowsRepository
-        //     .createQueryBuilder('borrow')
-        //     .where('borrow.bookId = :bookId', { bookId })
-        //     .getMany();
 
         return borrowsByBookId
     }

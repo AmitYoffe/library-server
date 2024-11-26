@@ -20,9 +20,10 @@ export class UsersRepository {
     async findMany(userIds: number[]) {
         const users = this.userRepository.find({
             where: { id: In(userIds) },
-            select: ['id', 'username', 'borrows']
+            select: ['id', 'username'],
+            relations: ['borrows'],
         })
-        // Don't see the borrows field - maybe make some query to show it
+
         return users
     }
 
