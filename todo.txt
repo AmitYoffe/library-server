@@ -20,7 +20,7 @@ general todos:
 
 26/11 Todo:
 1) I need to actually understand the whole db - repository configuration.
-2) See which classes i should make global so i won't need to import them in many different places
-3) Understand what maxim meant by "async local storage" 
+2) Understand what maxim meant by "async local storage"
+3)  
 4) 
 ----------------------------------------------------------------------------------------------------------------------------------

@@ -21,7 +21,6 @@ import { WritersModule } from './writers';
     WritersModule,
     BorrowsModule,
     UserModule,
-    // removing [ JwtModule, ConfigModule ] causes errors but i'm pretty sure i do not need them here
     JwtModule,
     ConfigModule
   ],
