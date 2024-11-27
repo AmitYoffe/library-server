@@ -8,7 +8,7 @@ Concepts for implementation in the project:
 - provider, provider factory ✅
 - Guard ( use jwt ), middleware, interceptor (and their differences) ✅
 - scopes ( specific to NestJs ) 🤔 - return to it at the end 
-- unit tests ( Write and test some service & controller ) ⛔
+- unit tests ( Write and test some service & controller ) 🤔 
 
 general todos:
 1) Make sure I Implement comments from both sakads  -->  read them again 
@@ -17,8 +17,8 @@ general todos:
 4) 
 
 27/11 Todo:
-1) Fix bug with index export files
-2) Write and test some service & controller
+1) 
+2) 
 3) 
 4) 
 ----------------------------------------------------------------------------------------------------------------------------------

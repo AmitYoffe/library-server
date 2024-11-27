@@ -41,7 +41,6 @@ export class BooksController {
     this.bookService.create(book);
   }
 
-  // make these routes more RESTy - read about REST api conventions
   @Post('borrow/:bookId/:userId')
   async borrow(
     @Param('bookId', ParseIntPipe) bookId: number,
