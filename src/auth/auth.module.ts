@@ -1,8 +1,9 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from 'src/users/user.module';
 import { AuthController, AuthService } from './';
+import { LoggerMiddleware } from 'src/middleware';
 
 @Module({
     imports: [
@@ -18,7 +19,11 @@ import { AuthController, AuthService } from './';
             },
         }),
     ],
-    providers: [AuthService],
+    providers: [
+        AuthService,
+        LoggerMiddleware,
+        Logger
+    ],
     controllers: [AuthController],
 })
 

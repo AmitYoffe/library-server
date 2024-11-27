@@ -8,19 +8,19 @@ Concepts for implementation in the project:
 - provider, provider factory ✅
 - Guard ( use jwt ), middleware, interceptor (and their differences) ✅
 - scopes ( specific to NestJs ) 🤔 - return to it at the end 
-- unit tests ( Write and test some service & controller )
+- unit tests ( Write and test some service & controller ) ⛔
 
 general todos:
-1) Fix bug with index export files
+1) Write and test some service & controller
 2) Enforce eslint, ido gave me an example file
 3) Make sure I Implement comments from both sakads  -->  read them again 
-4) Write and test some service & controller
+4) 
 5) 
 6) 
 
-26/11 Todo:
-1) I need to actually understand the whole db - repository configuration.
-2) Understand what maxim meant by "async local storage"
-3)  
+27/11 Todo:
+1) Fix bug with index export files
+2) Find where can i implement { Scope: Request } or Async Local Storage
+3) 
 4) 
 ----------------------------------------------------------------------------------------------------------------------------------

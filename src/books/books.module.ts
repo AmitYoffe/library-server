@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { BorrowsRepository, BorrowsService } from 'src/borrows';
 import { UserEntity, UsersRepository } from 'src/users';
@@ -6,6 +6,7 @@ import { WriterEntity, WritersRepository } from 'src/writers';
 import { BooksRepository } from './books.repository';
 import { BooksService } from './books.service';
 import { BookEntity, BooksController } from './index';
+import { LoggerMiddleware } from 'src/middleware';
 
 @Module({
   imports: [TypeOrmModule.forFeature([BookEntity, UserEntity, WriterEntity])],
@@ -16,7 +17,9 @@ import { BookEntity, BooksController } from './index';
     BooksRepository,
     BorrowsRepository,
     UsersRepository,
-    WritersRepository
+    WritersRepository,
+    LoggerMiddleware,
+    Logger
   ],
   controllers: [BooksController],
 })

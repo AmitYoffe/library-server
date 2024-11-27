@@ -32,8 +32,8 @@ export class BooksController {
   }
 
   @Get('borrow/:bookId')
-  getBorrowers(@Param('bookId', ParseIntPipe) bookId: number) {
-    return this.borrowsService.getBorrowersByBook(bookId);
+  async getBorrowers(@Param('bookId', ParseIntPipe) bookId: number) {
+    return await this.borrowsService.getBorrowersByBook(bookId);
   }
 
   @Post()
@@ -43,19 +43,19 @@ export class BooksController {
 
   // make these routes more RESTy - read about REST api conventions
   @Post('borrow/:bookId/:userId')
-  borrow(
+  async borrow(
     @Param('bookId', ParseIntPipe) bookId: number,
     @Param('userId', ParseIntPipe) userId: number,
   ) {
-    this.borrowsService.borrowBook({ bookId, userId });
+    await this.borrowsService.borrowBook({ bookId, userId });
   }
 
   @Post('return/:bookId/:userId')
-  return(
+  async return(
     @Param('bookId', ParseIntPipe) bookId: number,
     @Param('userId', ParseIntPipe) userId: number,
   ) {
-    this.borrowsService.returnBook({ bookId, userId });
+    await this.borrowsService.returnBook({ bookId, userId });
   }
 
   @Patch(':id')

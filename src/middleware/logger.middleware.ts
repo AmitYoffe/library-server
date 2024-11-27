@@ -18,4 +18,8 @@ export class LoggerMiddleware implements NestMiddleware {
         this.logger.log(log);
         next();
     }
+
+    logUserAction(username: string, action: string) {
+        this.logger.log(`${username} - ${action}`);
+    }
 }
