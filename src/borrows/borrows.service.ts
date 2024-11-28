@@ -15,23 +15,25 @@ export class BorrowsService {
   ) { }
 
   async borrowBook({ bookId, userId }: BorrowDto) {
-    const book = await this.booksRepository.findOne(bookId);
+    const { count } = await this.booksRepository.findOne(bookId);
 
-    if (!book) {
-      throw new NotFoundException(`Book with ID ${bookId} not found`);
-    }
+    // if (!book) {
+    //   throw new NotFoundException(`Book with ID ${bookId} not found`);
+    // }
 
-    if (book.count <= 0) {
+    if (count <= 0) {
       throw new NotFoundException(`No copies of the book are available for borrowing`);
     }
 
-    book.count -= 1;
+    // count -= 1;
 
     const user = await this.userRepository.findOneById(userId);
+    // i should take the username from the token not from a user,
+    //  here i am calling the db once again
     this.loggingService.logUserAction(user.username, `borrowed book with ID ${bookId}`);
 
     await this.borrowsRepository.create({ userId, bookId });
-    await this.booksRepository.update(bookId, book);
+    await this.booksRepository.update(bookId, { count: count - 1 });
   }
 
   async returnBook({ bookId, userId }: BorrowDto) {

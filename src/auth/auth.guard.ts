@@ -9,7 +9,7 @@ export class AuthGuard implements CanActivate {
     private readonly configService: ConfigService
   ) { }
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
 
@@ -18,27 +18,26 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = await this.jwtService.verifyAsync(
+      const payload = this.jwtService.verify(
         token, { secret: this.configService.get("JWT_SECRET") }
       );
 
-      request.user = payload;
+      // request.user = payload;
+
+      return payload.isAdmin;
     } catch {
       throw new UnauthorizedException();
     }
-
-    const isUserAdmin: boolean = request.user.isAdmin;
-    return isUserAdmin;
   }
 
-  private extractTokenFromHeader({ headers }: Request): string | undefined {
+  private extractTokenFromHeader({ headers }: Request): string | null {
     const authorizationHeader = headers['authorization'];
 
     if (!authorizationHeader) {
-      return undefined;
+      return null;
     }
 
     const [type, token] = authorizationHeader.split(' ') ?? [];
-    return type === 'Bearer' ? token : undefined;
+    return type === 'Bearer' ? token : null;
   }
 }

@@ -15,7 +15,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
         const message = (typeof responseBody === 'string') ? responseBody : (responseBody['message'] || responseBody);
         const error = (typeof responseBody === 'object' && responseBody['error']) ? responseBody['error'] : 'Error';
 
-
         const exceptionInfo = {
             message: message,
             error: error,

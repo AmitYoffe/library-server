@@ -1,5 +1,5 @@
 import { BorrowEntity } from 'src/borrows/borrow.entity';
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
 @Entity('users')
 export class UserEntity extends BaseEntity {
@@ -8,6 +8,7 @@ export class UserEntity extends BaseEntity {
   })
   id: number;
 
+  // @Unique()
   @Column({
     type: 'text',
   })

@@ -12,7 +12,7 @@ export class LoggerMiddleware implements NestMiddleware {
             status: res.statusCode,
             time: new Date().toLocaleString(),
             path: req.originalUrl,
-            body: req.body,
+            // body: req.body,
         };
 
         this.logger.log(log);

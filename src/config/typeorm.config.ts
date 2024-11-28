@@ -1,9 +1,9 @@
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModuleAsyncOptions, TypeOrmModuleOptions } from '@nestjs/typeorm';
-import * as dotenv from 'dotenv';
-dotenv.config();
+// import * as dotenv from 'dotenv';
+// dotenv.config();
 
-export class TypeOrmConfig {
+class TypeOrmConfig {
   static getOrmConfig(configService: ConfigService): TypeOrmModuleOptions {
     return {
       type: "postgres",

@@ -25,17 +25,15 @@ export class UsersRepository {
     }
 
     findMany(userIds: number[]) {
-        const users = this.userRepository.find({
+        return this.userRepository.find({
             where: { id: In(userIds) },
             select: ['id', 'username'],
             relations: ['borrows'],
         })
-
-        return users
     }
 
     register(userDto: CreateUserDto) {
         const user = this.userRepository.create(userDto)
-        return this.userRepository.save(user)
+        return this.userRepository.save(user) // do i recieve this in the response
     }
 }
