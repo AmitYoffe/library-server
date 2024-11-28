@@ -34,6 +34,6 @@ export class UsersRepository {
 
     register(userDto: CreateUserDto) {
         const user = this.userRepository.create(userDto)
-        return this.userRepository.save(user) // do i recieve this in the response
+        this.userRepository.save(user)
     }
 }

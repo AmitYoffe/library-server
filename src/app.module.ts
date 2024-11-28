@@ -8,21 +8,21 @@ import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { BooksModule } from './books';
 import { BorrowsModule } from './borrows';
-import { typeOrmConfigAsync } from './config/typeorm.config';
+import { typeOrmConfig } from './config/typeorm.config';
 import { HttpExceptionFilter, LoggerMiddleware } from './middleware';
 import { UserModule } from './users';
 import { WritersModule } from './writers';
 
 @Module({
   imports: [
-    TypeOrmModule.forRootAsync(typeOrmConfigAsync),
+    TypeOrmModule.forRootAsync(typeOrmConfig),
     AuthModule,
     BooksModule,
     WritersModule,
     BorrowsModule,
     UserModule,
     JwtModule,
-    ConfigModule
+    ConfigModule.forRoot() // my own comment: read more about forRoot(), and understand .env accessing a little deeper
   ],
   controllers: [AppController],
   providers: [
