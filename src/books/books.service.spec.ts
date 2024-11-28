@@ -30,8 +30,8 @@ describe('BooksService', () => {
 
   describe('findAll', () => {
     it('should return an array of books', async () => {
-      const searchDto: SearchBookDto = { title: 'Test Book', id: 1 };
-      const result = [{ id: 1, title: 'Test Book', writerId: 1 }];
+      const searchDto: SearchBookDto = { title: 'Mega Big America', id: 1 };
+      const result = [{ id: 1, title: 'Mega Big America', writerId: 1 }];
       mockBooksRepository.findAll.mockResolvedValue(result);
 
       const books = await service.findAll(searchDto);

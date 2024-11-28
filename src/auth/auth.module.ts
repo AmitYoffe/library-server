@@ -14,7 +14,10 @@ import { LoggerMiddleware } from 'src/middleware';
             useFactory: async (configService: ConfigService) => {
                 return {
                     secret: configService.get<string>('JWT_SECRET'),
-                    signOptions: { expiresIn: '12h' },
+                    signOptions:
+                    {
+                        expiresIn: configService.get<string>('TOKEN_EXPIRATION')
+                    },
                 };
             },
         }),
