@@ -7,7 +7,6 @@ import { AuthPayloadDto } from './dto/auth.dto';
 export class AuthController {
     constructor(
         private readonly authService: AuthService,
-        private readonly userService: UserService
     ) { }
 
     @Post('login')
@@ -17,6 +16,6 @@ export class AuthController {
 
     @Post('register')
     register(@Body() userDto: CreateUserDto) {
-        return this.userService.register(userDto);
+        return this.authService.register(userDto);
     }
 }

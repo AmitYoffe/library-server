@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { BooksRepository } from "src/books/books.repository";
+import { BookEntity } from "src/books";
 import { BorrowEntity } from "src/Borrows";
 import { Repository } from "typeorm";
 import { BorrowDto } from "./dto/borrow.dto";
@@ -10,12 +10,9 @@ export class BorrowsRepository {
     constructor(
         @InjectRepository(BorrowEntity)
         private borrowsRepository: Repository<BorrowEntity>,
-        private booksRepository: BooksRepository,
     ) { }
 
-    async create(borrow: BorrowDto) {
-        const book = await this.booksRepository.findOne(borrow.bookId);
-
+    async create(borrow: BorrowDto, book: BookEntity) {
         const borrowEntity = this.borrowsRepository.create({
             userId: borrow.userId,
             book: book,

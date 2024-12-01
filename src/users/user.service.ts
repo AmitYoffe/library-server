@@ -12,7 +12,7 @@ export class UserService {
         return await this.userRepository.findOne(username)
     }
 
-    async register(userDto: CreateUserDto) {
-        return await this.userRepository.register(userDto)
+    register(userDto: CreateUserDto) {
+        this.userRepository.register(userDto)
     }
 }

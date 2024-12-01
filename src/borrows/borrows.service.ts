@@ -15,13 +15,13 @@ export class BorrowsService {
   ) { }
 
   async borrowBook({ bookId, userId }: BorrowDto) {
-    const { count } = await this.booksRepository.findOne(bookId);
+    const book = await this.booksRepository.findOne(bookId);
 
     // if (!book) {
     //   throw new NotFoundException(`Book with ID ${bookId} not found`);
     // }
 
-    if (count <= 0) {
+    if (book.count <= 0) {
       throw new NotFoundException(`No copies of the book are available for borrowing`);
     }
 
@@ -32,8 +32,8 @@ export class BorrowsService {
     //  here i am calling the db once again
     this.loggingService.logUserAction(user.username, `borrowed book with ID ${bookId}`);
 
-    await this.borrowsRepository.create({ userId, bookId });
-    await this.booksRepository.update(bookId, { count: count - 1 });
+    await this.borrowsRepository.create({ userId, bookId }, book);
+    await this.booksRepository.update(bookId, { count: book.count - 1 });
   }
 
   async returnBook({ bookId, userId }: BorrowDto) {

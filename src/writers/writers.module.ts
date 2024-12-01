@@ -6,7 +6,6 @@ import { WritersService } from './writers.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([WriterEntity])],
-  exports: [TypeOrmModule],
   controllers: [WritersController],
   providers: [WritersService, WritersRepository]
 })
