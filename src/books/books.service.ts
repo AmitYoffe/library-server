@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { WritersRepository } from 'src/writers';
 import { BooksRepository } from './books.repository';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 
@@ -7,7 +6,6 @@ import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 export class BooksService {
   constructor(
     private readonly booksRepository: BooksRepository,
-    private readonly writersRepository: WritersRepository
   ) { }
 
   findAll({ title, id }: SearchBookDto) {
@@ -22,11 +20,6 @@ export class BooksService {
   }
 
   create(bookDto: CreateBookDto) {
-    const writer = this.writersRepository.findOne(bookDto.writerId);
-    if (!writer) {
-      throw new NotFoundException(`Writer not found`);
-    }
-
     this.booksRepository.create(bookDto)
   }
 

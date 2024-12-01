@@ -3,12 +3,12 @@ import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController, AppService } from './';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { BooksModule } from './books';
 import { BorrowsModule } from './borrows';
 import { typeOrmConfig } from './config/typeorm.config';
+import { LoggerModule } from './logger/logger.module';
 import { HttpExceptionFilter, LoggerMiddleware } from './middleware';
 import { UserModule } from './users';
 import { WritersModule } from './writers';
@@ -22,11 +22,10 @@ import { WritersModule } from './writers';
     BorrowsModule,
     UserModule,
     JwtModule,
+    LoggerModule,
     ConfigModule.forRoot() // my own comment: read more about forRoot(), and understand .env accessing a little deeper
   ],
-  controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
@@ -35,7 +34,6 @@ import { WritersModule } from './writers';
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
-    Logger,
   ]
 })
 

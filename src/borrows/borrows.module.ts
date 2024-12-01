@@ -1,13 +1,24 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BookEntity, UserEntity } from 'src';
-import { BooksRepository } from 'src/books/books.repository';
-import { UsersRepository } from 'src/users';
+import { BooksModule } from 'src/books/books.module';
+import { LoggerModule } from 'src/logger/logger.module';
+import { UserModule } from 'src/users';
 import { BorrowEntity } from './borrow.entity';
 import { BorrowsRepository } from './borrows.repository';
+import { BorrowsService } from './borrows.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BorrowEntity, BookEntity, UserEntity])],
-  providers: [BorrowsRepository, BooksRepository, UsersRepository]
+  imports: [
+    TypeOrmModule.forFeature([BorrowEntity]),
+    LoggerModule,
+    UserModule,
+    BooksModule,
+  ],
+  providers: [
+    BorrowsRepository,
+    BorrowsService,
+  ],
+  exports: [BorrowsService]
 })
+
 export class BorrowsModule { }

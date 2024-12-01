@@ -1,21 +1,21 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { BooksRepository } from 'src/books/books.repository';
-import { UsersRepository } from 'src/users';
+import { BooksService } from 'src/books/books.service';
+import { LoggerMiddleware } from 'src/middleware';
+import { UserService } from 'src/users';
 import { BorrowsRepository } from './borrows.repository';
 import { BorrowDto } from './dto/borrow.dto';
-import { LoggerMiddleware } from 'src/middleware';
 
 @Injectable()
 export class BorrowsService {
   constructor(
     private readonly borrowsRepository: BorrowsRepository,
-    private readonly booksRepository: BooksRepository,
-    private readonly userRepository: UsersRepository,
+    private readonly booksService: BooksService,
+    private readonly userService: UserService,
     private readonly loggingService: LoggerMiddleware
   ) { }
 
   async borrowBook({ bookId, userId }: BorrowDto) {
-    const book = await this.booksRepository.findOne(bookId);
+    const book = await this.booksService.findOne(bookId);
 
     // if (!book) {
     //   throw new NotFoundException(`Book with ID ${bookId} not found`);
@@ -27,17 +27,17 @@ export class BorrowsService {
 
     // count -= 1;
 
-    const user = await this.userRepository.findOneById(userId);
+    const user = await this.userService.findOneById(userId);
     // i should take the username from the token not from a user,
     //  here i am calling the db once again
     this.loggingService.logUserAction(user.username, `borrowed book with ID ${bookId}`);
 
     await this.borrowsRepository.create({ userId, bookId }, book);
-    await this.booksRepository.update(bookId, { count: book.count - 1 });
+    await this.booksService.update(bookId, { count: book.count - 1 });
   }
 
   async returnBook({ bookId, userId }: BorrowDto) {
-    const book = await this.booksRepository.findOne(bookId);
+    const book = await this.booksService.findOne(bookId);
 
     if (!book) {
       throw new NotFoundException(`Book with ID ${bookId} not found`);
@@ -55,10 +55,10 @@ export class BorrowsService {
 
     book.count += 1;
 
-    const user = await this.userRepository.findOneById(userId);
+    const user = await this.userService.findOneById(userId);
     this.loggingService.logUserAction(user.username, `returned book with ID ${bookId}`);
 
-    await this.booksRepository.update(bookId, book);
+    await this.booksService.update(bookId, book);
   }
 
   async getBorrowersByBook(bookId: number) {
@@ -68,7 +68,7 @@ export class BorrowsService {
     }
 
     const userIds = borrowsByBookId.map(borrow => borrow.userId);
-    const users = this.userRepository.findMany(userIds);
+    const users = this.userService.findMany(userIds);
 
     return users;
   }

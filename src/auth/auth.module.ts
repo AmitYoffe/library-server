@@ -1,13 +1,14 @@
-import { Logger, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { LoggerModule } from 'src/logger/logger.module';
 import { UserModule } from 'src/users/user.module';
 import { AuthController, AuthService } from './';
-import { LoggerMiddleware } from 'src/middleware';
 
 @Module({
     imports: [
         UserModule,
+        LoggerModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
@@ -21,11 +22,7 @@ import { LoggerMiddleware } from 'src/middleware';
                 })
         }),
     ],
-    providers: [
-        AuthService,
-        LoggerMiddleware,
-        Logger
-    ],
+    providers: [AuthService],
     controllers: [AuthController],
 })
 

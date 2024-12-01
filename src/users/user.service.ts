@@ -9,7 +9,15 @@ export class UserService {
     ) { }
 
     async findOne(username: string) {
-        return await this.userRepository.findOne(username)
+        return await this.userRepository.findOneByUsername(username)
+    }
+
+    findOneById(id: number) {
+        return this.userRepository.findOneById(id)
+    }
+
+    findMany(userIds: number[]) {
+        return this.userRepository.findMany(userIds)
     }
 
     register(userDto: CreateUserDto) {

@@ -18,7 +18,7 @@ import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 export class BooksController {
   constructor(
     private readonly bookService: BooksService,
-    private readonly borrowsService: BorrowsService
+    private readonly borrowsService: BorrowsService // where to push the borrowsService logic into ?
   ) { }
 
   @Get()
