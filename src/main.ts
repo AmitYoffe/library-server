@@ -6,8 +6,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const clientURL: string = configService.get("CLIENT_URL")
+  const LOCAL_PORT: number = configService.get("LOCAL_PORT")
 
   app.enableCors({ origin: clientURL });
-  await app.listen(3000);
+  await app.listen(LOCAL_PORT);
 }
 bootstrap();

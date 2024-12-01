@@ -9,7 +9,7 @@ import { BorrowDto } from "./dto/borrow.dto";
 export class BorrowsRepository {
     constructor(
         @InjectRepository(BorrowEntity)
-        private borrowsRepository: Repository<BorrowEntity>,
+        private readonly borrowsRepository: Repository<BorrowEntity>,
     ) { }
 
     async create(borrow: BorrowDto, book: BookEntity) {

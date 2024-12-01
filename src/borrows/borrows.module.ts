@@ -15,8 +15,8 @@ import { BorrowsService } from './borrows.service';
     BooksModule,
   ],
   providers: [
-    BorrowsRepository,
     BorrowsService,
+    BorrowsRepository,
   ],
   exports: [BorrowsService]
 })

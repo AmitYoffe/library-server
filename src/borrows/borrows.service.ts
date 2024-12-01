@@ -9,6 +9,8 @@ import { BorrowDto } from './dto/borrow.dto';
 export class BorrowsService {
   constructor(
     private readonly borrowsRepository: BorrowsRepository,
+    // BorrowsRepository is somehow causing the undefined (reading 'name') - Error
+    // maybe resorting the imports from the index files will help
     private readonly booksService: BooksService,
     private readonly userService: UserService,
     private readonly loggingService: LoggerMiddleware
