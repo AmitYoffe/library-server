@@ -5,9 +5,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthGuard, AuthModule } from './auth';
 import { BooksModule } from './books';
-import { BorrowsModule } from './borrows';
+import { BorrowsModule } from './borrows/borrows.module';
 import { typeOrmConfig } from './config/typeorm.config';
-import { LoggerModule } from './logger/logger.module';
 import { HttpExceptionFilter, LoggerMiddleware } from './middleware';
 import { UserModule } from './users';
 import { WritersModule } from './writers';
@@ -18,10 +17,9 @@ import { WritersModule } from './writers';
     AuthModule,
     BooksModule,
     WritersModule,
-    BorrowsModule,
     UserModule,
     JwtModule,
-    LoggerModule,
+    BorrowsModule,
     ConfigModule.forRoot() // my own comment: read more about forRoot(), and understand .env accessing a little deeper
   ],
   providers: [

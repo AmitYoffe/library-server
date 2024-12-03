@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { WriterEntity, WritersController } from './index';
+import { WriterEntity, WritersController } from './';
 import { WritersRepository } from './writers.repository';
 import { WritersService } from './writers.service';
 

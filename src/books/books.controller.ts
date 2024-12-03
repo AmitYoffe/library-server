@@ -10,16 +10,12 @@ import {
   Query,
   ValidationPipe,
 } from '@nestjs/common';
-import { BorrowsService } from 'src/borrows/borrows.service';
 import { BooksService } from './books.service';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 
 @Controller('books')
 export class BooksController {
-  constructor(
-    private readonly bookService: BooksService,
-    private readonly borrowsService: BorrowsService // where to push the borrowsService logic into ?
-  ) { }
+  constructor(private readonly bookService: BooksService) { }
 
   @Get()
   findAll(@Query(ValidationPipe) searchQuery: SearchBookDto) {
@@ -33,7 +29,7 @@ export class BooksController {
 
   @Get('borrow/:bookId')
   async getBorrowers(@Param('bookId', ParseIntPipe) bookId: number) {
-    return await this.borrowsService.getBorrowersByBook(bookId);
+    return await this.bookService.getBorrowersByBook(bookId);
   }
 
   @Post()
@@ -46,7 +42,7 @@ export class BooksController {
     @Param('bookId', ParseIntPipe) bookId: number,
     @Param('userId', ParseIntPipe) userId: number,
   ) {
-    await this.borrowsService.borrowBook({ bookId, userId });
+    this.bookService.borrowBook({ bookId, userId });
   }
 
   @Post('return/:bookId/:userId')
@@ -54,7 +50,7 @@ export class BooksController {
     @Param('bookId', ParseIntPipe) bookId: number,
     @Param('userId', ParseIntPipe) userId: number,
   ) {
-    await this.borrowsService.returnBook({ bookId, userId });
+    this.bookService.returnBook({ bookId, userId });
   }
 
   @Patch(':id')
