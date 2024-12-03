@@ -1,10 +1,9 @@
-import { Logger, MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthGuard } from './auth/auth.guard';
-import { AuthModule } from './auth/auth.module';
+import { AuthGuard, AuthModule } from './auth';
 import { BooksModule } from './books';
 import { BorrowsModule } from './borrows';
 import { typeOrmConfig } from './config/typeorm.config';

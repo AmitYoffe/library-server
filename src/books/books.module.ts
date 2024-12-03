@@ -9,7 +9,7 @@ import { BooksController } from './books.controller';
   imports: [
     TypeOrmModule.forFeature([BookEntity]),
   ],
-  providers: [BooksService, BooksRepository],
+  providers: [BooksService, BooksRepository], // maybe i should add borrowService here
   exports: [BooksService],
   controllers: [BooksController],
 })
