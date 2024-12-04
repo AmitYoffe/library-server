@@ -1,6 +1,5 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { BorrowsService } from 'src/borrows/';
-import { BorrowDto } from 'src/borrows/dto/borrow.dto';
+import { BorrowsService, BorrowDto } from 'src/borrows';
 import { UserService } from 'src/users';
 import { BooksRepository } from './books.repository';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
@@ -87,14 +86,14 @@ export class BooksService {
     await this.booksRepository.update(bookId, { count: book.count - 1 });
   }
 
-  async getBorrowersByBook(bookId: number) {
-    const borrowsByBookId = await this.borrowsService.getBorrowersByBook(bookId)
+  async getBorrowersByBookId(bookId: number) {
+    const borrowsByBookId = await this.borrowsService.getBorrowersByBookId(bookId)
     if (borrowsByBookId.length === 0) {
       throw new NotFoundException("This book hasn't been borrowed yet");
     }
 
     const userIds = borrowsByBookId.map(borrow => borrow.userId);
-    const users = this.userService.findMany(userIds);
+    const users = this.userService.findManyByIds(userIds);
 
     return users;
   }

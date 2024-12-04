@@ -29,7 +29,7 @@ export class BooksController {
 
   @Get('borrow/:bookId')
   async getBorrowers(@Param('bookId', ParseIntPipe) bookId: number) {
-    return await this.bookService.getBorrowersByBook(bookId);
+    return await this.bookService.getBorrowersByBookId(bookId);
   }
 
   @Post()

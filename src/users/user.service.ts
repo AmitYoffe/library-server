@@ -16,8 +16,8 @@ export class UserService {
         return this.userRepository.findOneById(id)
     }
 
-    findMany(userIds: number[]) {
-        return this.userRepository.findMany(userIds)
+    findManyByIds(userIds: number[]) {
+        return this.userRepository.findManyByIds(userIds)
     }
 
     register(userDto: CreateUserDto) {

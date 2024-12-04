@@ -11,14 +11,9 @@ Concepts for implementation in the project:
 - unit tests ( Write and test some service & controller ) ✅ 
 
 general todos:
-1) Make sure I Implement comments from both sakads  -->  read them again 
-2) 
+1) Create @requireAdmin decorator
+2) Add salting / hashing to my user passwords - lowest priority
 3) 
 4) 
 
-27/11 Todo:
-1) 
-2) 
-3) 
-4) 
 ----------------------------------------------------------------------------------------------------------------------------------

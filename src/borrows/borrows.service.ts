@@ -17,7 +17,7 @@ export class BorrowsService {
     this.borrowsRepository.create(borrow, book)
   }
 
-  getBorrowersByBook(bookId: number) {
+  getBorrowersByBookId(bookId: number) {
     return this.borrowsRepository.getBorrowersByBook(bookId)
   }
 }

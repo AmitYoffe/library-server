@@ -15,5 +15,3 @@ import { BorrowsService } from './borrows.service';
   exports: [BorrowsService],
 })
 export class BorrowsModule { }
-
-// maybe i dont need a borrows module ?

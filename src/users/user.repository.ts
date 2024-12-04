@@ -25,7 +25,7 @@ export class UsersRepository {
         return user;
     }
 
-    findMany(userIds: number[]) {
+    findManyByIds(userIds: number[]) {
         return this.userRepository.find({
             where: { id: In(userIds) },
             select: ['id', 'username'],
