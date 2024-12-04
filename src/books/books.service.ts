@@ -30,7 +30,7 @@ export class BooksService {
   async update(id: number, updatedBookDto: UpdateBookDto) {
     const updatedBook = await this.booksRepository.update(id, updatedBookDto);
 
-    if (!(updatedBook as any)) {
+    if (!updatedBook) {
       throw new NotFoundException(`Book with ID ${id} not found`);
     }
   }

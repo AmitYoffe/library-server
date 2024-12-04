@@ -1,10 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { AuthService } from 'src/auth';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UserEntity } from './user.entity';
 import { UsersRepository } from './user.repository';
 
 @Injectable()
 export class UserService {
     constructor(
+        private readonly authService: AuthService,
         private readonly userRepository: UsersRepository,
     ) { }
 
@@ -18,6 +21,10 @@ export class UserService {
 
     findManyByIds(userIds: number[]) {
         return this.userRepository.findManyByIds(userIds)
+    }
+
+    logIn(user: UserEntity, pass: string) {
+        this.authService.logIn(user, pass)
     }
 
     register(userDto: CreateUserDto) {

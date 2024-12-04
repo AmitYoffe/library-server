@@ -13,10 +13,7 @@ import { BooksService } from './books.service';
     UserModule,
     BorrowsModule
   ],
-  providers: [
-    BooksRepository,
-    BooksService,
-  ],
+  providers: [BooksRepository, BooksService],
   controllers: [BooksController],
 })
 
