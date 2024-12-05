@@ -1,8 +1,9 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { BorrowsService, BorrowDto } from 'src/borrows';
 import { UserService } from 'src/users';
 import { BooksRepository } from './books.repository';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
+import { BorrowsService } from 'src/borrows/borrows.service';
+import { BorrowDto } from 'src/borrows/dto/borrow.dto';
 
 @Injectable()
 export class BooksService {

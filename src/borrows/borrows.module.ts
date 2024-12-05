@@ -5,13 +5,9 @@ import { BorrowsRepository } from './borrows.repository';
 import { BorrowsService } from './borrows.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([BorrowEntity]),
-  ],
-  providers: [
-    BorrowsService,
-    BorrowsRepository,
-  ],
+  imports: [TypeOrmModule.forFeature([BorrowEntity])],
+  providers: [BorrowsService, BorrowsRepository],
   exports: [BorrowsService],
 })
+
 export class BorrowsModule { }
