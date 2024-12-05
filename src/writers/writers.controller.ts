@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { CreateWriterDto, SearchWriterDto, UpdateWriterDto } from './dto';
 import { WritersService } from './writers.service';
+import { IsAdmin } from 'src/auth';
 
 @Controller('writers')
 export class WritersController {
@@ -28,12 +29,15 @@ export class WritersController {
   }
 
   @Post()
-  create(@Body(ValidationPipe) writer: CreateWriterDto) {
+  create(
+    @IsAdmin()
+    @Body(ValidationPipe) writer: CreateWriterDto) {
     this.writerService.create(writer);
   }
 
   @Patch(':id')
   update(
+    @IsAdmin()
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updatedWriter: UpdateWriterDto,
   ) {
@@ -41,7 +45,9 @@ export class WritersController {
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(
+    @IsAdmin()
+    @Param('id', ParseIntPipe) id: number) {
     this.writerService.delete(id);
   }
 }

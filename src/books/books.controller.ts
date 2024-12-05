@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { BooksService } from './books.service';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
+import { IsAdmin } from 'src/auth';
 
 @Controller('books')
 export class BooksController {
@@ -33,12 +34,14 @@ export class BooksController {
   }
 
   @Post()
-  create(@Body(ValidationPipe) book: CreateBookDto) {
+  create(
+    @IsAdmin()
+    @Body(ValidationPipe) book: CreateBookDto) {
     this.bookService.create(book);
   }
 
   @Post('borrow/:bookId/:userId')
-  async borrow(
+  async borrowBook(
     @Param('bookId', ParseIntPipe) bookId: number,
     @Param('userId', ParseIntPipe) userId: number,
   ) {
@@ -46,7 +49,7 @@ export class BooksController {
   }
 
   @Post('return/:bookId/:userId')
-  async return(
+  async returnBook(
     @Param('bookId', ParseIntPipe) bookId: number,
     @Param('userId', ParseIntPipe) userId: number,
   ) {
@@ -55,6 +58,7 @@ export class BooksController {
 
   @Patch(':id')
   update(
+    @IsAdmin()
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updatedBook: UpdateBookDto,
   ) {
@@ -62,7 +66,9 @@ export class BooksController {
   }
 
   @Delete(':id')
-  delete(@Param('id', ParseIntPipe) id: number) {
+  delete(
+    @IsAdmin()
+    @Param('id', ParseIntPipe) id: number) {
     this.bookService.delete(id);
   }
 }

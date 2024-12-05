@@ -18,11 +18,13 @@ export class AuthGuard implements CanActivate {
     }
 
     try {
-      const payload = this.jwtService.verify(
+      const decodedUser = this.jwtService.verify(
         token, { secret: this.configService.get("JWT_SECRET") }
       );
 
-      return payload.isAdmin;
+      request.user = decodedUser
+
+      return true;
     } catch {
       throw new UnauthorizedException();
     }

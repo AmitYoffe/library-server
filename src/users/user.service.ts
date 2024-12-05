@@ -24,7 +24,7 @@ export class UserService {
     }
 
     logIn(user: UserEntity, pass: string) {
-        this.authService.logIn(user, pass)
+        return this.authService.logIn(user, pass)
     }
 
     register(userDto: CreateUserDto) {
