@@ -1,9 +1,9 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BorrowsService } from 'src/borrows/borrows.service';
+import { LoggerService } from 'src/logger/logger.service';
 import { UserService } from 'src/users';
 import { BooksRepository } from './books.repository';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
-import { BorrowsService } from 'src/borrows/borrows.service';
-import { BorrowDto } from 'src/borrows/dto/borrow.dto';
 
 @Injectable()
 export class BooksService {
@@ -11,6 +11,7 @@ export class BooksService {
     private readonly booksRepository: BooksRepository,
     private readonly borrowsService: BorrowsService,
     private readonly userService: UserService,
+    private readonly loggerService: LoggerService
   ) { }
 
   findAll({ title, id }: SearchBookDto) {
@@ -40,14 +41,15 @@ export class BooksService {
     this.booksRepository.delete(id);
   }
 
-  async returnBook({ bookId, userId }: BorrowDto) {
+  async returnBook(request: Request, bookId: number) {
     const book = await this.booksRepository.findOne(bookId);
-
     if (!book) {
       throw new NotFoundException(`Book with ID ${bookId} not found`);
     }
+    
+    const user = this.userService.getUserFromRequestToken(request);
 
-    const borrowCount = await this.borrowsService.countUserBorrows({ bookId, userId });
+    const borrowCount = await this.borrowsService.countUserBorrows({ bookId, userId: user.id });
     if (borrowCount === 0) {
       throw new BadRequestException('User did not borrow this book');
     }
@@ -59,31 +61,29 @@ export class BooksService {
 
     book.count += 1;
 
-    const _ = await this.userService.findOneById(userId);
-    // this.loggingService.logUserAction(user.username, `returned book with ID ${bookId}`);
+    this.loggerService.logUserAction(user.username, `returned book with ID ${bookId}`);
 
     await this.booksRepository.update(bookId, book);
   }
 
-  async borrowBook({ bookId, userId }: BorrowDto) {
-    const book = await this.booksRepository.findOne(bookId);
-
-    // if (!book) {
-    //   throw new NotFoundException(`Book with ID ${bookId} not found`);
-    // }
-
-    if (book.count <= 0) {
-      throw new NotFoundException(`No copies of the book are available for borrowing`);
+  async borrowBook(request: Request, bookId: number) {
+    const user = this.userService.getUserFromRequestToken(request);
+    if (!user) {
+      throw new BadRequestException('Invalid token. User not found.');
     }
 
-    // count -= 1;
+    const book = await this.booksRepository.findOne(bookId);
+    if (!book) {
+      throw new NotFoundException(`Book with ID ${bookId} not found`);
+    }
 
-    // const _ = await this.userService.findOneById(userId);
-    // i should take the username from the token not from a user,
-    //  here i am calling the db once again
-    // this.loggingService.logUserAction(user.username, `borrowed book with ID ${bookId}`);
+    if (book.count <= 0) {
+      throw new BadRequestException(`No copies of the book are available for borrowing`);
+    }
 
-    this.borrowsService.create({ userId, bookId }, book);
+    this.loggerService.logUserAction(user.username, `borrowed book with ID ${bookId}`);
+
+    this.borrowsService.create({ userId: user.id, bookId }, book);
     await this.booksRepository.update(bookId, { count: book.count - 1 });
   }
 
@@ -99,3 +99,5 @@ export class BooksService {
     return users;
   }
 }
+
+// fix count logic

@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { AuthService } from 'src/auth';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UserEntity } from './user.entity';
@@ -9,6 +10,7 @@ export class UserService {
     constructor(
         private readonly authService: AuthService,
         private readonly userRepository: UsersRepository,
+        private readonly jwtService: JwtService,
     ) { }
 
     async findOne(username: string) {
@@ -37,7 +39,7 @@ export class UserService {
 
         try {
             const decodedUser = this.jwtService.decode(token);
-            return decodedUser; // Returns the user payload: { sub, username, isAdmin, etc. }
+            return decodedUser;
         } catch {
             return null;
         }

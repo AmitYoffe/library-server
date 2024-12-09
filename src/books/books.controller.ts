@@ -8,11 +8,12 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   ValidationPipe,
 } from '@nestjs/common';
+import { IsAdmin } from 'src/auth';
 import { BooksService } from './books.service';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
-import { IsAdmin } from 'src/auth';
 
 @Controller('books')
 export class BooksController {
@@ -40,20 +41,20 @@ export class BooksController {
     this.bookService.create(book);
   }
 
-  @Post('borrow/:bookId/:userId')
+  @Post(':bookId/borrow')
   async borrowBook(
     @Param('bookId', ParseIntPipe) bookId: number,
-    @Param('userId', ParseIntPipe) userId: number,
+    @Req() request: Request,
   ) {
-    this.bookService.borrowBook({ bookId, userId });
+    this.bookService.borrowBook(request, bookId,);
   }
 
-  @Post('return/:bookId/:userId')
+  @Post(':bookId/return')
   async returnBook(
     @Param('bookId', ParseIntPipe) bookId: number,
-    @Param('userId', ParseIntPipe) userId: number,
+    @Req() request: Request,
   ) {
-    this.bookService.returnBook({ bookId, userId });
+    this.bookService.returnBook(request, bookId);
   }
 
   @Patch(':id')

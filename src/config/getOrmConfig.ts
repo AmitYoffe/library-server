@@ -14,7 +14,7 @@ export function getOrmConfig(configService: ConfigService): TypeOrmModuleOptions
         password: configService.get("DB_PASSWORD"),
         database: configService.get("DB_NAME"),
         // entities: [__dirname + '/src/**/*.entity{.ts,.js}'],
-        entities: [UserEntity, BorrowEntity, WriterEntity, BookEntity]
+        entities: [UserEntity, BorrowEntity, WriterEntity, BookEntity],
         // synchronize: true,
     }
 }

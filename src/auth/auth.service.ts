@@ -26,4 +26,15 @@ export class AuthService {
             access_token: this.jwtService.sign(payload),
         };
     }
+
+    extractTokenFromHeader(requestHeaders: Headers): string | null {
+        const authorizationHeader = requestHeaders['authorization'];
+
+        if (!authorizationHeader) {
+            return null;
+        }
+
+        const [type, token] = authorizationHeader.split(' ') ?? [];
+        return type === 'Bearer' ? token : null;
+    }
 }

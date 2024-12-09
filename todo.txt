@@ -12,7 +12,7 @@ Concepts for implementation in the project:
 
 general todos:
 1) Add salting / hashing to my user passwords - lowest priority
-2) 
+2) app crashes when i throw exceptions
 3) 
 4) 
 

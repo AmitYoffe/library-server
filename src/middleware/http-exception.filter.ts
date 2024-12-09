@@ -21,7 +21,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
             message,
         }
 
-        this.loggerService.logError({ log });
-        response.status(status).json({ log });
+        this.loggerService.logError(log);
+        response.status(status).json(log);
     }
 }
