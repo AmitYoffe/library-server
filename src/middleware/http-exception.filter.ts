@@ -1,30 +1,27 @@
-import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus, Logger } from '@nestjs/common';
+import { ArgumentsHost, Catch, ExceptionFilter, HttpException, HttpStatus } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { ResponseBody } from './types/response-body';
+import { LoggerService } from 'src/logger/logger.service';
 
 @Catch(HttpException)
 export class HttpExceptionFilter implements ExceptionFilter {
-    constructor(private readonly logger: Logger) { }
+    constructor(private readonly loggerService: LoggerService) { }
 
     catch(exception: HttpException, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse<Response>();
         const request = ctx.getRequest<Request>();
+
         const status: HttpStatus = exception.getStatus();
+        const message = exception.getResponse();
 
-        const responseBody = exception.getResponse();
-        const message = (typeof responseBody === 'string') ? responseBody : (responseBody['message'] || responseBody);
-        const error = (typeof responseBody === 'object' && responseBody['error']) ? responseBody['error'] : 'Error';
-
-        const exceptionInfo: ResponseBody = {
-            message: message,
-            error: error,
+        const log = {
             statusCode: status,
-            timestamp: new Date().toLocaleTimeString(),
+            timestamp: new Date().toISOString(),
             path: request.url,
+            message,
         }
 
-        this.logger.error(exceptionInfo);
-        response.status(status).send()
+        this.loggerService.logError({ log });
+        response.status(status).json({ log });
     }
 }

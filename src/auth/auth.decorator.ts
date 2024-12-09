@@ -1,7 +1,7 @@
 import { createParamDecorator, ExecutionContext, ForbiddenException } from '@nestjs/common';
 
 export const IsAdmin = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext) => {
+  (_, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     const user = request.user;
   
@@ -14,6 +14,6 @@ export const IsAdmin = createParamDecorator(
 );
 
 // wakanda - admin
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiV2FrYW5kYSBTb2xkaWVyIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzMzNDEyOTU4LCJleHAiOjE3MzM0NTYxNTh9._3ilUmJoxkEEw9ppSLYEzoteg5GxOUXT-oq0r8UY-XM
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsInVzZXJuYW1lIjoiV2FrYW5kYSBTb2xkaWVyIiwiaXNBZG1pbiI6dHJ1ZSwiaWF0IjoxNzMzNzQwMjA1LCJleHAiOjE3MzQzNDUwMDV9.s4tX2dJkNthPdfCDLRxtD5jUuce11-b9w0DSvtIUd-o
 // testuser- isnt admin
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoiVGVzdFVzZXIiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzMzNDExMjc1LCJleHAiOjE3MzM0NTQ0NzV9.8dfWKIhkuskyfU0HgDymZRNBFgG3dUj5S04olqtE1Tg
+// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIsInVzZXJuYW1lIjoiVGVzdFVzZXIiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzMzNzQwMjcxLCJleHAiOjE3MzQzNDUwNzF9.baLLHGPKgenGLhbWAmPhEzQPB3vUEU0ErDes3Thz-L8

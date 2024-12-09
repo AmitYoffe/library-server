@@ -1,11 +1,10 @@
 import { Global, Logger, Module } from '@nestjs/common';
-import { HttpExceptionFilter, LoggerMiddleware } from 'src/middleware';
+import { LoggerService } from './logger.service';
 
 @Global()
 @Module({
-    providers: [Logger, LoggerMiddleware, HttpExceptionFilter],
-    exports: [Logger, LoggerMiddleware, HttpExceptionFilter],
+  providers: [LoggerService, Logger],
+  exports: [LoggerService],
 })
 
-export class LoggerModule { }
-// refactor the files and logic here !
+export class LoggerModule {}

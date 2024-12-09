@@ -20,8 +20,8 @@ import { AuthService } from './auth.service';
                 })
         }),
     ],
-    exports: [JwtModule, AuthService],
     providers: [AuthService],
+    exports: [JwtModule, AuthService],
 })
 
 export class AuthModule { }
