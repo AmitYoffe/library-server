@@ -30,4 +30,16 @@ export class UserService {
     register(userDto: CreateUserDto) {
         this.userRepository.register(userDto)
     }
+
+    getUserFromRequestToken(request: Request) {
+        const token = this.authService.extractTokenFromHeader(request.headers);
+        if (!token) return null;
+
+        try {
+            const decodedUser = this.jwtService.decode(token);
+            return decodedUser; // Returns the user payload: { sub, username, isAdmin, etc. }
+        } catch {
+            return null;
+        }
+    }
 }
