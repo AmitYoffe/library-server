@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { BookEntity } from "src/books/book.entity";
 import { Repository } from "typeorm";
@@ -21,10 +21,14 @@ export class BorrowsRepository {
         return this.borrowsRepository.save(borrowEntity);
     }
 
-    getBorrowersByBook(bookId: number) {
-        const borrowsByBookId = this.borrowsRepository.find({
+    async getBorrowersByBook(bookId: number) {
+        const borrowsByBookId = await this.borrowsRepository.find({
             where: { book: { id: bookId } }
         })
+
+        if (borrowsByBookId.length === 0) {
+            throw new NotFoundException("This book hasn't been borrowed yet");
+        }
 
         return borrowsByBookId
     }

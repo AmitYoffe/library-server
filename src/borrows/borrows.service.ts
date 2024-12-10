@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { BookEntity } from 'src/books/book.entity';
 import { BorrowsRepository } from './borrows.repository';
 import { BorrowDto } from './dto/borrow.dto';

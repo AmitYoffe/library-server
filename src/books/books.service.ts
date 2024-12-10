@@ -19,10 +19,7 @@ export class BooksService {
   }
 
   findOne(id: number) {
-    const book = this.booksRepository.findOne(id);
-    if (!book) throw new NotFoundException(`Book With Id of ${id} Not Found`);
-
-    return book;
+    return this.booksRepository.findOne(id);;
   }
 
   create(bookDto: CreateBookDto) {
@@ -30,11 +27,7 @@ export class BooksService {
   }
 
   async update(id: number, updatedBookDto: UpdateBookDto) {
-    const updatedBook = await this.booksRepository.update(id, updatedBookDto);
-
-    if (!updatedBook) {
-      throw new NotFoundException(`Book with ID ${id} not found`);
-    }
+    await this.booksRepository.update(id, updatedBookDto);
   }
 
   delete(id: number) {
@@ -43,15 +36,11 @@ export class BooksService {
 
   async returnBook(request: Request, bookId: number) {
     const book = await this.booksRepository.findOne(bookId);
-    if (!book) {
-      throw new NotFoundException(`Book with ID ${bookId} not found`);
-    }
-    
     const user = this.userService.getUserFromRequestToken(request);
 
     const borrowCount = await this.borrowsService.countUserBorrows({ bookId, userId: user.id });
     if (borrowCount === 0) {
-      throw new BadRequestException('User did not borrow this book');
+      throw new BadRequestException(`${user.username} did not borrow this book`);
     }
 
     const bookStockCount = book.count - borrowCount;
@@ -61,27 +50,19 @@ export class BooksService {
 
     book.count += 1;
 
-    this.loggerService.logUserAction(user.username, `returned book with ID ${bookId}`);
-
+    this.loggerService.logUserAction(user.username, `returned "${book.title}"`);
     await this.booksRepository.update(bookId, book);
   }
 
   async borrowBook(request: Request, bookId: number) {
     const user = this.userService.getUserFromRequestToken(request);
-    if (!user) {
-      throw new BadRequestException('Invalid token. User not found.');
-    }
-
     const book = await this.booksRepository.findOne(bookId);
-    if (!book) {
-      throw new NotFoundException(`Book with ID ${bookId} not found`);
-    }
 
     if (book.count <= 0) {
-      throw new BadRequestException(`No copies of the book are available for borrowing`);
+      throw new BadRequestException(`No copies of the book "${book.title}" are available for borrowing`);
     }
 
-    this.loggerService.logUserAction(user.username, `borrowed book with ID ${bookId}`);
+    this.loggerService.logUserAction(user.username, `borrowed "${book.title}"`);
 
     this.borrowsService.create({ userId: user.id, bookId }, book);
     await this.booksRepository.update(bookId, { count: book.count - 1 });
@@ -89,9 +70,6 @@ export class BooksService {
 
   async getBorrowersByBookId(bookId: number) {
     const borrowsByBookId = await this.borrowsService.getBorrowersByBookId(bookId)
-    if (borrowsByBookId.length === 0) {
-      throw new NotFoundException("This book hasn't been borrowed yet");
-    }
 
     const userIds = borrowsByBookId.map(borrow => borrow.userId);
     const users = this.userService.findManyByIds(userIds);

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthService } from 'src/auth';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -39,6 +39,10 @@ export class UserService {
 
         try {
             const decodedUser = this.jwtService.decode(token);
+            if (!decodedUser) {
+                throw new BadRequestException('Invalid token. User not found.');
+            }
+
             return decodedUser;
         } catch {
             return null;
