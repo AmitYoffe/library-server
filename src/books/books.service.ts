@@ -1,7 +1,7 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { BorrowsService } from 'src/borrows/borrows.service';
 import { LoggerService } from 'src/logger/logger.service';
-import { UserService } from 'src/users';
+import { UserEntity, UserService } from 'src/users';
 import { BooksRepository } from './books.repository';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 
@@ -19,11 +19,11 @@ export class BooksService {
   }
 
   findOne(id: number) {
-    return this.booksRepository.findOne(id);;
+    return this.booksRepository.findOne(id);
   }
 
   create(bookDto: CreateBookDto) {
-    this.booksRepository.create(bookDto)
+    this.booksRepository.create(bookDto);
   }
 
   async update(id: number, updatedBookDto: UpdateBookDto) {
@@ -36,9 +36,10 @@ export class BooksService {
 
   async returnBook(request: Request, bookId: number) {
     const book = await this.booksRepository.findOne(bookId);
-    const user = this.userService.getUserFromRequestToken(request);
+    const user: UserEntity = this.userService.getUserFromRequestToken(request);
 
     const borrowCount = await this.borrowsService.countUserBorrows({ bookId, userId: user.id });
+    // console.log("book: ", book, "| user: ", user, "| borrowCount: ", borrowCount)
     if (borrowCount === 0) {
       throw new BadRequestException(`${user.username} did not borrow this book`);
     }
@@ -55,7 +56,7 @@ export class BooksService {
   }
 
   async borrowBook(request: Request, bookId: number) {
-    const user = this.userService.getUserFromRequestToken(request);
+    const user: UserEntity = this.userService.getUserFromRequestToken(request);
     const book = await this.booksRepository.findOne(bookId);
 
     if (book.count <= 0) {
