@@ -8,15 +8,18 @@ import {
   Patch,
   Post,
   Query,
-  ValidationPipe
+  UseGuards,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreateWriterDto, SearchWriterDto, UpdateWriterDto } from './dto';
 import { WritersService } from './writers.service';
 import { IsAdmin } from 'src/auth';
+import { UserAdminGuard } from 'src/users/userAdmin.guard';
 
 @Controller('writers')
+@UseGuards(UserAdminGuard)
 export class WritersController {
-  constructor(private readonly writerService: WritersService) { }
+  constructor(private readonly writerService: WritersService) {}
 
   @Get()
   findAll(@Query(ValidationPipe) searchQuery: SearchWriterDto) {
@@ -29,15 +32,14 @@ export class WritersController {
   }
 
   @Post()
-  create(
-    @IsAdmin()
-    @Body(ValidationPipe) writer: CreateWriterDto) {
+  @IsAdmin()
+  create(@Body(ValidationPipe) writer: CreateWriterDto) {
     this.writerService.create(writer);
   }
 
   @Patch(':id')
+  @IsAdmin()
   update(
-    @IsAdmin()
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updatedWriter: UpdateWriterDto,
   ) {
@@ -45,9 +47,8 @@ export class WritersController {
   }
 
   @Delete(':id')
-  delete(
-    @IsAdmin()
-    @Param('id', ParseIntPipe) id: number) {
+  @IsAdmin()
+  delete(@Param('id', ParseIntPipe) id: number) {
     this.writerService.delete(id);
   }
 }

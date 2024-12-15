@@ -12,12 +12,7 @@
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
-    // "strictNullChecks": false,
-    // "strictBindCallApply": false,
-    // "forceConsistentCasingInFileNames": false,
-    // "noFallthroughCasesInSwitch": false,
     "noImplicitAny": false,
-    
     "strict": true,
   },
   "exclude": ["node_modules", "test", "dist", "**/*spec.ts"]

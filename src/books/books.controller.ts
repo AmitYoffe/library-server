@@ -9,15 +9,18 @@ import {
   Post,
   Query,
   Req,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { IsAdmin } from 'src/auth';
+import { UserAdminGuard } from 'src/users/userAdmin.guard';
 import { BooksService } from './books.service';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 
 @Controller('books')
+@UseGuards(UserAdminGuard)
 export class BooksController {
-  constructor(private readonly bookService: BooksService) { }
+  constructor(private readonly bookService: BooksService) {}
 
   @Get()
   findAll(@Query(ValidationPipe) searchQuery: SearchBookDto) {
@@ -35,9 +38,8 @@ export class BooksController {
   }
 
   @Post()
-  create(
-    @IsAdmin()
-    @Body(ValidationPipe) book: CreateBookDto) {
+  @IsAdmin()
+  create(@Body(ValidationPipe) book: CreateBookDto) {
     this.bookService.create(book);
   }
 
@@ -46,7 +48,7 @@ export class BooksController {
     @Param('bookId', ParseIntPipe) bookId: number,
     @Req() request: Request,
   ) {
-    this.bookService.borrowBook(request, bookId,);
+    this.bookService.borrowBook(request, bookId);
   }
 
   @Post(':bookId/return')
@@ -58,8 +60,8 @@ export class BooksController {
   }
 
   @Patch(':id')
+  @IsAdmin()
   update(
-    @IsAdmin()
     @Param('id', ParseIntPipe) id: number,
     @Body(ValidationPipe) updatedBook: UpdateBookDto,
   ) {
@@ -67,9 +69,8 @@ export class BooksController {
   }
 
   @Delete(':id')
-  delete(
-    @IsAdmin()
-    @Param('id', ParseIntPipe) id: number) {
+  @IsAdmin()
+  delete(@Param('id', ParseIntPipe) id: number) {
     this.bookService.delete(id);
   }
 }
