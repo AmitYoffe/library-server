@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 import { BookEntity } from './book.entity';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 
@@ -12,17 +12,12 @@ export class BooksRepository {
   ) {}
 
   findAll({ title, id }: SearchBookDto) {
-    const queryBuilder = this.booksRepository.createQueryBuilder('book');
-
-    if (id) {
-      queryBuilder.andWhere('book.id = :bookId', { bookId: id });
-    }
-
-    if (title) {
-      queryBuilder.andWhere('book.title ILIKE :title', { title: `%${title}%` });
-    }
-
-    return queryBuilder.getMany();
+    return this.booksRepository.find({
+      where: {
+        ...(id ? { id } : {}),
+        ...(title ? { title: ILike(`%${title}%`) } : {}),
+      },
+    });
   }
 
   async findOne(bookId: number) {
