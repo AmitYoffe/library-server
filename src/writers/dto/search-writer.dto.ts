@@ -5,13 +5,13 @@ export class SearchWriterDto {
     @IsOptional()
     @IsNumber()
     @Transform(({ value }) => (typeof value === 'string' ? parseInt(value, 10) : value))
-    id: number;
+    id!: number;
 
     @IsOptional()
     @IsString()
-    firstName: string;
+    firstName!: string;
 
     @IsOptional()
     @IsString()
-    lastName: string;
+    lastName!: string;
 }

@@ -1,23 +1,29 @@
 import { BookEntity } from 'src/books/book.entity';
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity('writers')
 export class WriterEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'integer',
   })
-  id: number;
+  id!: number;
 
   @Column({
     type: 'text',
   })
-  firstName: string;
+  firstName!: string;
 
   @Column({
     type: 'text',
   })
-  lastName: string;
+  lastName!: string;
 
   @OneToMany(() => BookEntity, (book) => book.writer)
-  books: BookEntity[];
+  books!: BookEntity[];
 }

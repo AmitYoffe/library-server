@@ -3,11 +3,11 @@ import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 export class CreateBookDto {
   @IsString()
   @IsNotEmpty()
-  title: string;
+  title!: string;
 
   @IsNotEmpty()
-  writerId: number;
+  writerId!: number;
 
   @IsNumber()
-  count: number;
+  count!: number;
 }

@@ -16,7 +16,7 @@ import { WritersModule } from './writers';
     BooksModule,
     WritersModule,
     JwtModule,
-    ConfigModule.forRoot()
+    ConfigModule.forRoot(),
   ],
   providers: [
     {
@@ -27,11 +27,10 @@ import { WritersModule } from './writers';
       provide: APP_FILTER,
       useClass: HttpExceptionFilter,
     },
-  ]
+  ],
 })
-
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*')
+    consumer.apply(LoggerMiddleware).forRoutes('*');
   }
 }

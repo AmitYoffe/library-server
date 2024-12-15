@@ -11,9 +11,12 @@ Concepts for implementation in the project:
 - unit tests ( Write and test some service & controller ) ✅ 
 
 general todos:
-1) Add salting / hashing to my user passwords - lowest priority
-2) app crashes when i throw exceptions
+1)
+2) 
 3) 
 4) 
 
 ----------------------------------------------------------------------------------------------------------------------------------
+frontend tools:
+React, react hookforms, react query, NextJs, MUI, axios, Zod
++ add a login page by my design

@@ -39,7 +39,6 @@ export class BooksService {
     const user: UserEntity = this.userService.getUserFromRequestToken(request);
 
     const borrowCount = await this.borrowsService.countUserBorrows({ bookId, userId: user.id });
-    // console.log("book: ", book, "| user: ", user, "| borrowCount: ", borrowCount)
     if (borrowCount === 0) {
       throw new BadRequestException(`${user.username} did not borrow this book`);
     }

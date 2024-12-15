@@ -1,36 +1,44 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
     private readonly jwtService: JwtService,
-    private readonly configService: ConfigService
-  ) { }
+    private readonly configService: ConfigService,
+    private readonly reflector: Reflector,
+  ) {}
 
   canActivate(context: ExecutionContext): boolean {
-    const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const isPublic = this.reflector.get('isPublic', context.getClass());
+    if (isPublic) return true;
 
-    if (!token) {
-      throw new UnauthorizedException();
-    }
+    const request = context.switchToHttp().getRequest();
+
+    const token = this.extractTokenFromHeader(request.headers);
+    if (!token) throw new UnauthorizedException('No token found in headers');
 
     try {
-      const decodedUser = this.jwtService.verify(
-        token, { secret: this.configService.get("JWT_SECRET") }
-      );
+      const decodedUser = this.jwtService.verify(token, {
+        secret: this.configService.get('JWT_SECRET'),
+      });
 
-      request.user = decodedUser
+      request.user = decodedUser;
 
       return true;
-    } catch {
-      throw new UnauthorizedException();
+    } catch (error) {
+      throw new UnauthorizedException(error);
     }
   }
 
-  private extractTokenFromHeader({ headers }: Request): string | null {
+  private extractTokenFromHeader(headers: Headers): string | null {
     const authorizationHeader = headers['authorization'];
 
     if (!authorizationHeader) {

@@ -9,6 +9,7 @@ export class WritersService {
     private readonly writersRepository: WritersRepository,
   ) { }
 
+  // promise should carry dto and not whole entity
   findAll({ id, firstName, lastName }: SearchWriterDto): Promise<WriterEntity[]> {
     return this.writersRepository.findAll({ id, firstName, lastName });
   }
@@ -32,7 +33,8 @@ export class WritersService {
     }
     Object.assign(writerToUpdate, updatedWriter);
 
-    this.writersRepository.update(writerToUpdate);
+    // just pass the partial object, no need to override all. its redundant
+    this.writersRepository.update(updatedWriter);
   }
 
   delete(id: number) {

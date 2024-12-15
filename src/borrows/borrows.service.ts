@@ -5,19 +5,17 @@ import { BorrowDto } from './dto/borrow.dto';
 
 @Injectable()
 export class BorrowsService {
-  constructor(
-    private readonly borrowsRepository: BorrowsRepository,
-  ) { }
+  constructor(private readonly borrowsRepository: BorrowsRepository) {}
 
   async countUserBorrows({ bookId, userId }: BorrowDto) {
-    return await this.borrowsRepository.countUserBorrows({ bookId, userId })
+    return this.borrowsRepository.countUserBorrows({ bookId, userId });
   }
 
   create(borrow: BorrowDto, book: BookEntity) {
-    this.borrowsRepository.create(borrow, book)
+    this.borrowsRepository.create(borrow, book);
   }
 
   getBorrowersByBookId(bookId: number) {
-    return this.borrowsRepository.getBorrowersByBook(bookId)
+    return this.borrowsRepository.getBorrowersByBook(bookId);
   }
 }

@@ -1,29 +1,36 @@
 import { BorrowEntity } from 'src/borrows/borrow.entity';
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
 @Entity('users')
-@Unique(["username"])
+@Unique(['username'])
 export class UserEntity extends BaseEntity {
   @PrimaryGeneratedColumn({
     type: 'integer',
   })
-  id: number;
+  id!: number;
 
   @Column({
     type: 'text',
   })
-  username: string;
-  
+  username!: string;
+
   @Column({
     type: 'boolean',
   })
-  isAdmin: boolean;
-  
+  isAdmin!: boolean;
+
   @Column({
     type: 'text',
   })
-  password: string;
-  
+  password!: string;
+
   @OneToMany(() => BorrowEntity, (borrow) => borrow.user)
-  borrows: BorrowEntity[];
+  borrows!: BorrowEntity[];
 }

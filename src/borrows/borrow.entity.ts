@@ -7,16 +7,16 @@ export class BorrowEntity extends BaseEntity {
     @PrimaryGeneratedColumn({
         type: 'integer',
     })
-    id: number;
+    id!: number;
 
     @Column({
         type: 'integer',
     })
-    userId: number;
+    userId!: number;
 
     @ManyToOne(() => BookEntity, (book) => book.borrows, { onDelete: 'CASCADE' })
-    book: BookEntity;
+    book!: BookEntity;
 
     @ManyToOne(() => UserEntity, (user) => user.borrows, { onDelete: 'CASCADE' })
-    user: UserEntity;
+    user!: UserEntity;
 }

@@ -4,11 +4,11 @@ import { BookEntity } from 'src/books/book.entity';
 export class CreateWriterDto {
   @IsString()
   @IsNotEmpty()
-  firstName: string;
+  firstName!: string;
 
   @IsString()
   @IsNotEmpty()
-  lastName: string;
+  lastName!: string;
 
-  books: BookEntity[];
+  books!: BookEntity[];
 }
