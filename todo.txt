@@ -17,6 +17,3 @@ general todos:
 4) 
 
 ----------------------------------------------------------------------------------------------------------------------------------
-frontend tools:
-React, react hookforms, react query, NextJs, MUI, axios, Zod
-+ add a login page by my design

@@ -11,7 +11,7 @@ export class BooksRepository {
     private readonly booksRepository: Repository<BookEntity>,
   ) {}
 
-  findAll({ title, id }: SearchBookDto) {
+  findAll({ title, id }: SearchBookDto): Promise<BookEntity[]> {
     return this.booksRepository.find({
       where: {
         ...(id ? { id } : {}),

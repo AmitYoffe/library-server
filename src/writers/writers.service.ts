@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateWriterDto, SearchWriterDto, UpdateWriterDto } from './dto';
 import { WritersRepository } from './writers.repository';
+import { WriterEntity } from './writer.entity';
 
 @Injectable()
 export class WritersService {
@@ -10,7 +11,7 @@ export class WritersService {
     id,
     firstName,
     lastName,
-  }: SearchWriterDto): Promise<SearchWriterDto[]> {
+  }: SearchWriterDto): Promise<WriterEntity[]> {
     return this.writersRepository.findAll({ id, firstName, lastName });
   }
 

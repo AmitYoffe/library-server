@@ -4,6 +4,7 @@ import { LoggerService } from 'src/logger/logger.service';
 import { UserEntity, UserService } from 'src/users';
 import { BooksRepository } from './books.repository';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
+import { BookEntity } from './book.entity';
 
 @Injectable()
 export class BooksService {
@@ -11,10 +12,10 @@ export class BooksService {
     private readonly booksRepository: BooksRepository,
     private readonly borrowsService: BorrowsService,
     private readonly userService: UserService,
-    private readonly loggerService: LoggerService
-  ) { }
+    private readonly loggerService: LoggerService,
+  ) {}
 
-  findAll({ title, id }: SearchBookDto) {
+  findAll({ title, id }: SearchBookDto): Promise<BookEntity[]> {
     return this.booksRepository.findAll({ title, id });
   }
 
@@ -38,9 +39,14 @@ export class BooksService {
     const book = await this.booksRepository.findOne(bookId);
     const user: UserEntity = this.userService.getUserFromRequestToken(request);
 
-    const borrowCount = await this.borrowsService.countUserBorrows({ bookId, userId: user.id });
+    const borrowCount = await this.borrowsService.countUserBorrows({
+      bookId,
+      userId: user.id,
+    });
     if (borrowCount === 0) {
-      throw new BadRequestException(`${user.username} did not borrow this book`);
+      throw new BadRequestException(
+        `${user.username} did not borrow this book`,
+      );
     }
 
     const bookStockCount = book.count - borrowCount;
@@ -59,7 +65,9 @@ export class BooksService {
     const book = await this.booksRepository.findOne(bookId);
 
     if (book.count <= 0) {
-      throw new BadRequestException(`No copies of the book "${book.title}" are available for borrowing`);
+      throw new BadRequestException(
+        `No copies of the book "${book.title}" are available for borrowing`,
+      );
     }
 
     this.loggerService.logUserAction(user.username, `borrowed "${book.title}"`);
@@ -69,9 +77,10 @@ export class BooksService {
   }
 
   async getBorrowersByBookId(bookId: number) {
-    const borrowsByBookId = await this.borrowsService.getBorrowersByBookId(bookId)
+    const borrowsByBookId =
+      await this.borrowsService.getBorrowersByBookId(bookId);
 
-    const userIds = borrowsByBookId.map(borrow => borrow.userId);
+    const userIds = borrowsByBookId.map((borrow) => borrow.userId);
     const users = this.userService.findManyByIds(userIds);
 
     return users;

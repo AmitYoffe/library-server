@@ -1,3 +1,4 @@
+import { Transform } from 'class-transformer';
 import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateBookDto {
@@ -9,5 +10,8 @@ export class CreateBookDto {
   writerId!: number;
 
   @IsNumber()
+  @Transform(({ value }) =>
+    typeof value === 'string' ? parseInt(value, 10) : value,
+  )
   count!: number;
 }

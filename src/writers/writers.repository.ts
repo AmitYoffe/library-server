@@ -15,7 +15,7 @@ export class WritersRepository {
     id,
     firstName,
     lastName,
-  }: SearchWriterDto): Promise<SearchWriterDto[]> {
+  }: SearchWriterDto): Promise<WriterEntity[]> {
     return this.writersRepository.find({
       where: {
         ...(id ? { id } : {}),
