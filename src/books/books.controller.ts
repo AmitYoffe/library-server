@@ -37,6 +37,11 @@ export class BooksController {
     return await this.bookService.getBorrowersByBookId(bookId);
   }
 
+  @Get('writer/:writerId')
+  findAllBooksByWriterId(@Param('writerId', ParseIntPipe) writerId: number) {
+    return this.bookService.findAllById(writerId);
+  }
+
   @Post()
   @IsAdmin()
   create(@Body(ValidationPipe) book: CreateBookDto) {

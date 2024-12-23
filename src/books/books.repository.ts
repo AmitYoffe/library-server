@@ -28,6 +28,12 @@ export class BooksRepository {
     return book;
   }
 
+  findAllById(id: number): Promise<BookEntity[]> {
+    return this.booksRepository.find({
+      where: { writer: { id } },
+    });
+  }
+
   create(bookDto: CreateBookDto) {
     const book = this.booksRepository.create(bookDto);
     return this.booksRepository.save(book);

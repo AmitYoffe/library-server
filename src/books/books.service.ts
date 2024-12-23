@@ -2,9 +2,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { BorrowsService } from 'src/borrows/borrows.service';
 import { LoggerService } from 'src/logger/logger.service';
 import { UserEntity, UserService } from 'src/users';
+import { BookEntity } from './book.entity';
 import { BooksRepository } from './books.repository';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
-import { BookEntity } from './book.entity';
 
 @Injectable()
 export class BooksService {
@@ -21,6 +21,10 @@ export class BooksService {
 
   findOne(id: number) {
     return this.booksRepository.findOne(id);
+  }
+
+  findAllById(writerId: number) {
+    return this.booksRepository.findAllById(writerId);
   }
 
   create(bookDto: CreateBookDto) {
