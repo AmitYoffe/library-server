@@ -26,9 +26,9 @@ export class BorrowsRepository {
       where: { book: { id: bookId } },
     });
 
-    if (borrowsByBookId.length === 0) {
-      throw new NotFoundException("This book hasn't been borrowed yet");
-    }
+    // if (borrowsByBookId.length === 0) {
+    //   throw new NotFoundException("This book hasn't been borrowed yet");
+    // }
 
     return borrowsByBookId;
   }

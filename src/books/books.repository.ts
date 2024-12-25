@@ -13,6 +13,7 @@ export class BooksRepository {
 
   findAll({ title, id }: SearchBookDto): Promise<BookEntity[]> {
     return this.booksRepository.find({
+      select: ['id', 'title', 'count', 'writerId'],
       where: {
         ...(id ? { id } : {}),
         ...(title ? { title: ILike(`%${title}%`) } : {}),
