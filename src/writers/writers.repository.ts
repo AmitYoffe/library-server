@@ -26,14 +26,22 @@ export class WritersRepository {
   }
 
   findOne(id: number) {
-    const writer = this.writersRepository.findOne({
+    return this.writersRepository.findOne({
       where: { id },
       relations: {
         books: true,
       },
     });
+  }
 
-    return writer;
+  findByBookId(bookId: number) {
+    return this.writersRepository.findOne({
+      where: {
+        books: {
+          id: bookId,
+        },
+      },
+    });
   }
 
   create(writerDto: CreateWriterDto) {

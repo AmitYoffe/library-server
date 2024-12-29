@@ -31,6 +31,11 @@ export class WritersController {
     return this.writerService.findOne(id);
   }
 
+  @Get('book/:bookId')
+  findWriterByBookId(@Param('bookId', ParseIntPipe) bookId: number) {
+    return this.writerService.findByBookId(bookId);
+  }
+
   @Post()
   @IsAdmin()
   create(@Body(ValidationPipe) writer: CreateWriterDto) {

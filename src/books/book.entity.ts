@@ -28,7 +28,7 @@ export class BookEntity extends BaseEntity {
   })
   count!: number;
 
-  @Column({ type: 'integer', nullable: true }) // Explicitly define writerId
+  @Column({ type: 'integer', nullable: true })
   writerId!: number;
 
   @ManyToOne(() => WriterEntity, (writer) => writer.books)

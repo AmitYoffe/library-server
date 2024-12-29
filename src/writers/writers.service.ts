@@ -23,6 +23,10 @@ export class WritersService {
     return writer;
   }
 
+  findByBookId(bookId: number) {
+    return this.writersRepository.findByBookId(bookId);
+  }
+
   create(writerDto: CreateWriterDto) {
     this.writersRepository.create(writerDto);
   }
