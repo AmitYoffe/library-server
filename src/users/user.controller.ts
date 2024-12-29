@@ -4,9 +4,8 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserService } from 'src/users/user.service';
 import { UserAdminGuard } from './userAdmin.guard';
 
-@Public()
-@UseGuards(UserAdminGuard)
 @Controller('user')
+@UseGuards(UserAdminGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -17,6 +16,7 @@ export class UserController {
   }
 
   @Post('login')
+  @Public()
   async logIn(@Body() { username, password }: AuthPayloadDto) {
     const user = await this.userService.findOne(username);
 
@@ -24,6 +24,7 @@ export class UserController {
   }
 
   @Post('register')
+  @Public()
   register(@Body() userDto: CreateUserDto) {
     return this.userService.register(userDto);
   }
