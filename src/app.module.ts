@@ -8,11 +8,13 @@ import { BooksModule } from './books/books.module';
 import { typeOrmConfig } from './config/typeorm.config';
 import { HttpExceptionFilter, LoggerMiddleware } from './middleware';
 import { WritersModule } from './writers';
+import { UserModule } from './users';
 
 @Module({
   imports: [
     TypeOrmModule.forRootAsync(typeOrmConfig),
     AuthModule,
+    // UserModule,
     BooksModule,
     WritersModule,
     JwtModule,

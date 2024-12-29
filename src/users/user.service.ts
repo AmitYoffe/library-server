@@ -14,6 +14,10 @@ export class UserService {
     private readonly jwtService: JwtService,
   ) {}
 
+  findAll() {
+    return this.userRepository.findAll();
+  }
+
   async findOne(username: string) {
     return await this.userRepository.findOneByUsername(username);
   }
@@ -33,7 +37,7 @@ export class UserService {
   async register(userDto: CreateUserDto) {
     const hashedPassword = await bcrypt.hash(userDto.password, 10);
     userDto.password = hashedPassword;
-    
+
     this.userRepository.register(userDto);
   }
 

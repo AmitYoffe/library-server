@@ -11,6 +11,10 @@ export class UsersRepository {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
+  findAll() {
+    return this.userRepository.find();
+  }
+
   async findOneByUsername(username: string) {
     const user = await this.userRepository.findOne({ where: { username } });
     if (!user)
@@ -36,10 +40,14 @@ export class UsersRepository {
 
   async register(userDto: CreateUserDto) {
     const username = userDto.username;
-    const existingUserWithUsername = await this.userRepository.findOne({ where: { username } });
+    const existingUserWithUsername = await this.userRepository.findOne({
+      where: { username },
+    });
 
     if (existingUserWithUsername) {
-      throw new NotFoundException(`User with name "${username}" already exists, try another name.`)
+      throw new NotFoundException(
+        `User with name "${username}" already exists, try another name.`,
+      );
     }
 
     const user = this.userRepository.create(userDto);
