@@ -51,6 +51,12 @@ export class UserService {
         throw new BadRequestException('Invalid token. User not found.');
       }
 
+      // return {
+      //   id: decodedPayload.sub as number,
+      //   username: decodedPayload.username,
+      //   isAdmin: decodedPayload.isAdmin,
+      // };
+
       return decodedUser;
     } catch {
       return null;

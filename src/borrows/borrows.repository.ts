@@ -1,7 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BookEntity } from 'src/books/book.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import { BorrowEntity } from './borrow.entity';
 import { BorrowDto } from './dto/borrow.dto';
 
@@ -21,23 +21,16 @@ export class BorrowsRepository {
     return this.borrowsRepository.save(borrowEntity);
   }
 
-  async getBorrowersByBook(bookId: number) {
-    const borrowsByBookId = await this.borrowsRepository.find({
-      where: { book: { id: bookId } },
-    });
-
-    // if (borrowsByBookId.length === 0) {
-    //   throw new NotFoundException("This book hasn't been borrowed yet");
-    // }
-
-    return borrowsByBookId;
+  return(borrowToUpdate: BorrowEntity) {
+    borrowToUpdate.returnedAt = new Date();
+    return this.borrowsRepository.save(borrowToUpdate);
   }
 
-  countUserBorrows({ bookId, userId }: BorrowDto) {
-    return this.borrowsRepository.count({
+  async getBorrowersByBook(bookId: number) {
+    return await this.borrowsRepository.find({
       where: {
-        user: { id: userId },
         book: { id: bookId },
+        returnedAt: IsNull(),
       },
     });
   }

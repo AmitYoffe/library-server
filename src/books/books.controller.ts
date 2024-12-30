@@ -32,11 +32,6 @@ export class BooksController {
     return this.bookService.findOne(id);
   }
 
-  @Get('borrow/:bookId')
-  async getBorrowers(@Param('bookId', ParseIntPipe) bookId: number) {
-    return await this.bookService.getBorrowersByBookId(bookId);
-  }
-
   @Get('writer/:writerId')
   findAllBooksByWriterId(@Param('writerId', ParseIntPipe) writerId: number) {
     return this.bookService.findAllById(writerId);
@@ -46,6 +41,11 @@ export class BooksController {
   @IsAdmin()
   create(@Body(ValidationPipe) book: CreateBookDto) {
     this.bookService.create(book);
+  }
+
+  @Get('borrow/:bookId')
+  async getBorrowers(@Param('bookId', ParseIntPipe) bookId: number) {
+    return await this.bookService.getBorrowersByBookId(bookId);
   }
 
   @Post(':bookId/borrow')

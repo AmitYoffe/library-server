@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, ValidateIf } from 'class-validator';
 
 export class BorrowDto {
   @IsNumber()
@@ -8,4 +8,8 @@ export class BorrowDto {
   @IsNumber()
   @IsNotEmpty()
   bookId!: number;
+
+  @IsDate()
+  @ValidateIf((_object, value) => value !== null)
+  returnedAt!: Date | null;
 }

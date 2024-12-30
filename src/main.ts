@@ -3,6 +3,10 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  process.on('uncaughtException', (error) => {
+    console.error('Uncaught Exception:', error);
+  });
+
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const clientURL = configService.get('CLIENT_URL');

@@ -37,7 +37,7 @@ export class WritersService {
     if (!writerToUpdate) {
       throw new NotFoundException(`Writer with ID ${id} not found`);
     }
-    Object.assign(writerToUpdate, updatedWriter); // pass only changed updatedWriter and not full writerToUpdate that holds unchanged fields too, for some reason i can't
+    Object.assign(writerToUpdate, updatedWriter);
 
     this.writersRepository.update(writerToUpdate);
   }

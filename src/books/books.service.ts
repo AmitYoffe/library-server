@@ -43,41 +43,40 @@ export class BooksService {
     const book = await this.booksRepository.findOne(bookId);
     const user: UserEntity = this.userService.getUserFromRequestToken(request);
 
-    const borrowCount = await this.borrowsService.countUserBorrows({
-      bookId,
-      userId: user.id,
-    });
-    if (borrowCount === 0) {
+    const borrowsByBookId =
+      await this.borrowsService.getBorrowersByBookId(bookId);
+
+    const borrowsToUpdate = borrowsByBookId.filter(
+      (borrow) => borrow.userId === user.id && borrow.returnedAt === null,
+    );
+
+    if (borrowsToUpdate.length === 0) {
       throw new BadRequestException(
-        `${user.username} did not borrow this book`,
+        `User "${user.username}" isn't currently borrowing ${book.title}`,
       );
     }
 
-    const bookStockCount = book.count - borrowCount;
-    if (bookStockCount <= 0) {
-      throw new BadRequestException("Can't return book: no stock available");
-    }
-
-    book.count += 1;
+    const returnedBorrow = borrowsToUpdate[0];
 
     this.loggerService.logUserAction(user.username, `returned "${book.title}"`);
-    await this.booksRepository.update(bookId, book);
+    this.borrowsService.return(returnedBorrow);
   }
 
   async borrowBook(request: Request, bookId: number) {
-    const user: UserEntity = this.userService.getUserFromRequestToken(request);
+    const user = this.userService.getUserFromRequestToken(request);
+
     const book = await this.booksRepository.findOne(bookId);
 
-    if (book.count <= 0) {
-      throw new BadRequestException(
-        `No copies of the book "${book.title}" are available for borrowing`,
-      );
+    if (!book) {
+      throw new BadRequestException(`Book with ID ${bookId} not found`);
     }
 
     this.loggerService.logUserAction(user.username, `borrowed "${book.title}"`);
 
-    this.borrowsService.create({ userId: user.id, bookId }, book);
-    await this.booksRepository.update(bookId, { count: book.count - 1 });
+    this.borrowsService.create(
+      { userId: user.id, bookId, returnedAt: null },
+      book,
+    );
   }
 
   async getBorrowersByBookId(bookId: number) {
@@ -90,5 +89,3 @@ export class BooksService {
     return users;
   }
 }
-
-// fix count logic

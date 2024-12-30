@@ -23,6 +23,7 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
 
     const token = this.extractTokenFromHeader(request.headers);
+    // and no current user logged?
     if (!token) throw new UnauthorizedException('No token found in headers');
 
     try {

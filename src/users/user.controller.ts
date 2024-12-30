@@ -4,6 +4,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserService } from 'src/users/user.service';
 import { UserAdminGuard } from './userAdmin.guard';
 
+@Public()
 @Controller('user')
 @UseGuards(UserAdminGuard)
 export class UserController {
@@ -16,7 +17,6 @@ export class UserController {
   }
 
   @Post('login')
-  @Public()
   async logIn(@Body() { username, password }: AuthPayloadDto) {
     const user = await this.userService.findOne(username);
 
@@ -24,7 +24,6 @@ export class UserController {
   }
 
   @Post('register')
-  @Public()
   register(@Body() userDto: CreateUserDto) {
     return this.userService.register(userDto);
   }

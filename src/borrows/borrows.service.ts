@@ -1,5 +1,6 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BookEntity } from 'src/books/book.entity';
+import { BorrowEntity } from './borrow.entity';
 import { BorrowsRepository } from './borrows.repository';
 import { BorrowDto } from './dto/borrow.dto';
 
@@ -7,12 +8,12 @@ import { BorrowDto } from './dto/borrow.dto';
 export class BorrowsService {
   constructor(private readonly borrowsRepository: BorrowsRepository) {}
 
-  async countUserBorrows({ bookId, userId }: BorrowDto) {
-    return this.borrowsRepository.countUserBorrows({ bookId, userId });
-  }
-
   create(borrow: BorrowDto, book: BookEntity) {
     this.borrowsRepository.create(borrow, book);
+  }
+
+  async return(borrowToUpdate: BorrowEntity) {
+    await this.borrowsRepository.return(borrowToUpdate);
   }
 
   getBorrowersByBookId(bookId: number) {
