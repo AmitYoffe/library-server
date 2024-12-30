@@ -11,7 +11,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  @IsAdmin()
+  // @IsAdmin()
   findAll() {
     return this.userService.findAll();
   }
