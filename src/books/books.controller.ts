@@ -48,20 +48,20 @@ export class BooksController {
     return await this.bookService.getBorrowersByBookId(bookId);
   }
 
-  @Post(':bookId/borrow')
+  @Post(':bookId/borrow/:userId')
   async borrowBook(
     @Param('bookId', ParseIntPipe) bookId: number,
-    @Req() request: Request,
+    @Param('userId', ParseIntPipe) userId: number,
   ) {
-    this.bookService.borrowBook(request, bookId);
+    this.bookService.borrowBook(userId, bookId);
   }
 
-  @Post(':bookId/return')
+  @Post(':bookId/return/:userId')
   async returnBook(
     @Param('bookId', ParseIntPipe) bookId: number,
-    @Req() request: Request,
+    @Param('userId', ParseIntPipe) userId: number,
   ) {
-    this.bookService.returnBook(request, bookId);
+    this.bookService.returnBook(userId, bookId);
   }
 
   @Patch(':id')

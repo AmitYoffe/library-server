@@ -39,42 +39,60 @@ export class BooksService {
     this.booksRepository.delete(id);
   }
 
-  async returnBook(request: Request, bookId: number) {
+  async returnBook(userId: number, bookId: number) {
     const book = await this.booksRepository.findOne(bookId);
-    const user: UserEntity = this.userService.getUserFromRequestToken(request);
+    // const user: UserEntity = this.userService.getUserFromRequestToken(request);
+    const borrower = await this.userService.findOneById(userId); // fix return method similar to how borrow
+
+    if (!borrower) {
+      throw new BadRequestException(`User with ID ${userId} not found`);
+    }
 
     const borrowsByBookId =
       await this.borrowsService.getBorrowersByBookId(bookId);
 
     const borrowsToUpdate = borrowsByBookId.filter(
-      (borrow) => borrow.userId === user.id && borrow.returnedAt === null,
+      (borrow) => borrow.userId === borrower.id && borrow.returnedAt === null,
     );
 
     if (borrowsToUpdate.length === 0) {
       throw new BadRequestException(
-        `User "${user.username}" isn't currently borrowing ${book.title}`,
+        `User "${borrower.username}" isn't currently borrowing ${book.title}`,
       );
     }
 
+    console.log('user that borrowed: ', borrower);
+    console.log('book: ', book);
+
     const returnedBorrow = borrowsToUpdate[0];
 
-    this.loggerService.logUserAction(user.username, `returned "${book.title}"`);
+    this.loggerService.logUserAction(
+      borrower.username,
+      `returned "${book.title}"`,
+    );
     this.borrowsService.return(returnedBorrow);
   }
 
-  async borrowBook(request: Request, bookId: number) {
-    const user = this.userService.getUserFromRequestToken(request);
-
+  async borrowBook(userId: number, bookId: number) {
+    // const user = this.userService.getUserFromRequestToken(request);
+    const borrower = await this.userService.findOneById(userId);
     const book = await this.booksRepository.findOne(bookId);
+
+    if (!borrower) {
+      throw new BadRequestException(`User with ID ${userId} not found`);
+    }
 
     if (!book) {
       throw new BadRequestException(`Book with ID ${bookId} not found`);
     }
 
-    this.loggerService.logUserAction(user.username, `borrowed "${book.title}"`);
+    this.loggerService.logUserAction(
+      borrower.username,
+      `borrowed "${book.title}"`,
+    );
 
     this.borrowsService.create(
-      { userId: user.id, bookId, returnedAt: null },
+      { userId: borrower.id, bookId, returnedAt: null },
       book,
     );
   }
