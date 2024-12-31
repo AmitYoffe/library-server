@@ -60,10 +60,6 @@ export class BooksService {
         `User "${borrower.username}" isn't currently borrowing ${book.title}`,
       );
     }
-
-    console.log('user that borrowed: ', borrower);
-    console.log('book: ', book);
-
     const returnedBorrow = borrowsToUpdate[0];
 
     this.loggerService.logUserAction(
