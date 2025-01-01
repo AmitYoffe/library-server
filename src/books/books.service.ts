@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { BorrowsService } from 'src/borrows/borrows.service';
 import { LoggerService } from 'src/logger/logger.service';
-import { UserEntity, UserService } from 'src/users';
+import { UserService } from 'src/users';
 import { BookEntity } from './book.entity';
 import { BooksRepository } from './books.repository';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
@@ -23,8 +23,13 @@ export class BooksService {
     return this.booksRepository.findOne(id);
   }
 
-  findAllById(writerId: number) {
-    return this.booksRepository.findAllById(writerId);
+  findAllBooksByWriterId(writerId: number) {
+    return this.booksRepository.findAllBooksByWriterId(writerId);
+  }
+
+  async findAllBorrowedBooksByUserId(userId: number) {
+    const borrows = await this.borrowsService.getBorrowsByUserId(userId);
+    return this.booksRepository.findAllBorrowedBooksByUserId(borrows, userId);
   }
 
   create(bookDto: CreateBookDto) {
@@ -41,8 +46,7 @@ export class BooksService {
 
   async returnBook(userId: number, bookId: number) {
     const book = await this.booksRepository.findOne(bookId);
-    // const user: UserEntity = this.userService.getUserFromRequestToken(request);
-    const borrower = await this.userService.findOneById(userId); // fix return method similar to how borrow
+    const borrower = await this.userService.findOneById(userId);
 
     if (!borrower) {
       throw new BadRequestException(`User with ID ${userId} not found`);
@@ -70,7 +74,6 @@ export class BooksService {
   }
 
   async borrowBook(userId: number, bookId: number) {
-    // const user = this.userService.getUserFromRequestToken(request);
     const borrower = await this.userService.findOneById(userId);
     const book = await this.booksRepository.findOne(bookId);
 
@@ -101,5 +104,12 @@ export class BooksService {
     const users = this.userService.findManyByIds(userIds);
 
     return users;
+  }
+
+  async getBorrowsCount(bookId: number) {
+    const borrowsByBookId =
+      await this.borrowsService.getBorrowersByBookId(bookId);
+
+    return borrowsByBookId.length;
   }
 }

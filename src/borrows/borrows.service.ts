@@ -19,4 +19,8 @@ export class BorrowsService {
   getBorrowersByBookId(bookId: number) {
     return this.borrowsRepository.getBorrowersByBook(bookId);
   }
+
+  getBorrowsByUserId(userId: number) {
+    return this.borrowsRepository.getBorrowsByUser(userId);
+  }
 }

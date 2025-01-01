@@ -34,4 +34,13 @@ export class BorrowsRepository {
       },
     });
   }
+
+  getBorrowsByUser(userId: number) {
+    return this.borrowsRepository.find({
+      where: {
+        user: { id: userId },
+        returnedAt: IsNull(),
+      },
+    });
+  }
 }

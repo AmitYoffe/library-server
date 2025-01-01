@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository } from 'typeorm';
+import { BorrowEntity } from 'src/borrows';
+import { ILike, In, Repository } from 'typeorm';
 import { BookEntity } from './book.entity';
 import { CreateBookDto, SearchBookDto, UpdateBookDto } from './dto';
 
@@ -14,6 +15,7 @@ export class BooksRepository {
   findAll({ title, id }: SearchBookDto): Promise<BookEntity[]> {
     return this.booksRepository.find({
       select: ['id', 'title', 'count', 'writerId'],
+      // why am i not seeing writerId or even fucking writer??? ?
       where: {
         ...(id ? { id } : {}),
         ...(title ? { title: ILike(`%${title}%`) } : {}),
@@ -29,7 +31,7 @@ export class BooksRepository {
     return book;
   }
 
-  findAllById(id: number): Promise<BookEntity[]> {
+  findAllBooksByWriterId(id: number): Promise<BookEntity[]> {
     return this.booksRepository.find({
       where: { writer: { id } },
     });
@@ -53,5 +55,23 @@ export class BooksRepository {
 
   delete(id: number) {
     return this.booksRepository.delete(id);
+  }
+
+  findAllBorrowedBooksByUserId(borrows: BorrowEntity[], userId: number) {
+    const matchingBorrows = borrows.filter(
+      (borrow) => borrow.userId === userId,
+    );
+
+    const borrowedBooksIds = matchingBorrows.map((borrow) => borrow.bookId);
+
+    if (borrowedBooksIds.length === 0) {
+      return [];
+    }
+
+    return this.booksRepository.find({
+      where: {
+        id: In(borrowedBooksIds),
+      },
+    });
   }
 }

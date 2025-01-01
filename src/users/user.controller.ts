@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
-import { AuthPayloadDto, IsAdmin, Public } from 'src/auth';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthPayloadDto, Public } from 'src/auth';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UserService } from 'src/users/user.service';
 import { UserAdminGuard } from './userAdmin.guard';
@@ -11,9 +11,13 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  // @IsAdmin()
   findAll() {
     return this.userService.findAll();
+  }
+
+  @Get('jwt')
+  getUserFromJwt(@Req() request: Request) {
+    return this.userService.getUserFromJwt(request);
   }
 
   @Post('login')

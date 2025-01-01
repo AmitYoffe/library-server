@@ -34,13 +34,23 @@ export class BooksController {
 
   @Get('writer/:writerId')
   findAllBooksByWriterId(@Param('writerId', ParseIntPipe) writerId: number) {
-    return this.bookService.findAllById(writerId);
+    return this.bookService.findAllBooksByWriterId(writerId);
+  }
+
+  @Get('user/:userId')
+  findAllBooksByUserId(@Param('userId', ParseIntPipe) userId: number) {
+    return this.bookService.findAllBorrowedBooksByUserId(userId);
   }
 
   @Post()
   @IsAdmin()
   create(@Body(ValidationPipe) book: CreateBookDto) {
     this.bookService.create(book);
+  }
+
+  @Get('borrow/:bookId/count')
+  async getBorrowsCount(@Param('bookId', ParseIntPipe) bookId: number) {
+    return await this.bookService.getBorrowsCount(bookId);
   }
 
   @Get('borrow/:bookId')

@@ -21,6 +21,11 @@ export class BorrowEntity extends BaseEntity {
   userId!: number;
 
   @Column({
+    type: 'integer',
+  })
+  bookId!: number;
+
+  @Column({
     type: 'date',
     nullable: true,
     default: null,

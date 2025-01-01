@@ -41,7 +41,7 @@ export class UserService {
     this.userRepository.register(userDto);
   }
 
-  getUserFromRequestToken(request: Request) {
+  getUserFromJwt(request: Request) {
     const token = this.authService.extractTokenFromHeader(request.headers);
     if (!token) return null;
 
