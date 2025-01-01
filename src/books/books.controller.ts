@@ -8,9 +8,8 @@ import {
   Patch,
   Post,
   Query,
-  Req,
   UseGuards,
-  ValidationPipe,
+  ValidationPipe
 } from '@nestjs/common';
 import { IsAdmin } from 'src/auth';
 import { UserAdminGuard } from 'src/users/userAdmin.guard';
@@ -35,6 +34,11 @@ export class BooksController {
   @Get('writer/:writerId')
   findAllBooksByWriterId(@Param('writerId', ParseIntPipe) writerId: number) {
     return this.bookService.findAllBooksByWriterId(writerId);
+  }
+
+  @Get('reader/:writerId')
+  getReadersOfWriter(@Param('writerId', ParseIntPipe) writerId: number) {
+    return this.bookService.getReadersOfWriter(writerId);
   }
 
   @Get('user/:userId')

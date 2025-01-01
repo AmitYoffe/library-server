@@ -112,4 +112,18 @@ export class BooksService {
 
     return borrowsByBookId.length;
   }
+
+  async getReadersOfWriter(writerId: number) {
+    const booksOfWriter = await this.findAllBooksByWriterId(writerId);
+
+    const activeBorrowerIds: number[] = [];
+
+    for (const book of booksOfWriter) {
+      const borrows = await this.borrowsService.getBorrowersByBookId(book.id);
+      const borrowerIds = borrows.map((borrow) => borrow.userId);
+      activeBorrowerIds.push(...borrowerIds);
+    }
+
+    return activeBorrowerIds;
+  }
 }
